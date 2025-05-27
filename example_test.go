@@ -56,7 +56,7 @@ func ExampleQueueAPI() {
 		panic(err)
 	}
 	fmt.Println(resCreate.Status.QueueName)
-	queueID := simplemq.GetQueueID(resCreate)
+	queueID := simplemq.GetQueueID(*resCreate)
 
 	// ListQueues
 	resList, err := queueOp.List(ctx)
@@ -109,11 +109,9 @@ func ExampleQueueAPI() {
 	}
 
 	// DeleteQueue
-	resDelete, err := queueOp.Delete(ctx, queueID)
-	if err != nil {
+	if err := queueOp.Delete(ctx, queueID); err != nil {
 		panic(err)
 	}
-	fmt.Println(resDelete.Availability)
 
 	// Output:
 	// SDK-Test-Queue
@@ -121,7 +119,6 @@ func ExampleQueueAPI() {
 	// 99
 	// SDK-Test-Queueの概要を変更
 	// 0
-	// discontinued
 }
 
 func ExampleMessageAPI() {
@@ -142,12 +139,12 @@ func ExampleMessageAPI() {
 	}
 	// teardown
 	defer func() {
-		if _, err := queueOp.Delete(ctx, simplemq.GetQueueID(resCreate)); err != nil {
+		if err := queueOp.Delete(ctx, simplemq.GetQueueID(*resCreate)); err != nil {
 			panic(err)
 		}
 	}()
-	queueName := resCreate.Status.QueueName
-	apiKey, err := queueOp.RotateAPIKey(ctx, simplemq.GetQueueID(resCreate))
+	queueName := simplemq.GetQueueName(*resCreate)
+	apiKey, err := queueOp.RotateAPIKey(ctx, simplemq.GetQueueID(*resCreate))
 	if err != nil {
 		panic(err)
 	}
