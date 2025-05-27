@@ -18,11 +18,10 @@ import (
 	"context"
 	"fmt"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/sacloud/simplemq-api-go"
-	"github.com/sacloud/simplemq-api-go/apis/v1/sacloud"
+	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
 )
 
 var requriedEnvs = []string{
@@ -38,25 +37,18 @@ func checkEnvs() {
 	}
 }
 
-func getQueueID(q sacloud.CommonServiceItem) string {
-	if q.ID.IsString() {
-		return q.ID.String
-	}
-	return strconv.Itoa(q.ID.Int)
-}
-
-func ExampleSacloudAPI() {
+func ExampleQueueAPI() {
 	checkEnvs()
 	ctx := context.Background()
 
-	client, err := simplemq.NewSacloudClient()
+	client, err := simplemq.NewQueueClient()
 	if err != nil {
 		panic(err)
 	}
-	sacloudOp := simplemq.NewSacloudOp(client)
+	queueOp := simplemq.NewQueueOp(client)
 
 	// CreateQueue
-	resCreate, err := sacloudOp.CreateQueue(ctx, simplemq.CreateQueueRequest{
+	resCreate, err := queueOp.Create(ctx, simplemq.CreateQueueRequest{
 		QueueName:   "SDK-Test-Queue",
 		Description: "SDK-Test-Queueの概要",
 	})
@@ -64,24 +56,24 @@ func ExampleSacloudAPI() {
 		panic(err)
 	}
 	fmt.Println(resCreate.Status.QueueName)
-	queueID := getQueueID(resCreate)
+	queueID := simplemq.GetQueueID(resCreate)
 
 	// ListQueues
-	resList, err := sacloudOp.ListQueues(ctx)
+	resList, err := queueOp.List(ctx)
 	if err != nil {
 		panic(err)
 	}
 	for _, q := range resList {
-		if queueID == getQueueID(q) {
+		if queueID == simplemq.GetQueueID(q) {
 			fmt.Println(resCreate.Status.QueueName)
 		}
 	}
 
 	// ConfigQueue
-	resConfig, err := sacloudOp.ConfigQueue(ctx, queueID, sacloud.ConfigQueueRequest{
-		CommonServiceItem: sacloud.ConfigQueueRequestCommonServiceItem{
-			Description: sacloud.NewOptString("SDK-Test-Queueの概要を変更"),
-			Settings: sacloud.ConfigQueueRequestCommonServiceItemSettings{
+	resConfig, err := queueOp.Config(ctx, queueID, queue.ConfigQueueRequest{
+		CommonServiceItem: queue.ConfigQueueRequestCommonServiceItem{
+			Description: queue.NewOptString("SDK-Test-Queueの概要を変更"),
+			Settings: queue.ConfigQueueRequestCommonServiceItemSettings{
 				VisibilityTimeoutSeconds: 99,
 				ExpireSeconds:            resCreate.Settings.ExpireSeconds, // NOTE: VisibilityTimeoutSecondsのみを変更
 			},
@@ -93,31 +85,31 @@ func ExampleSacloudAPI() {
 	fmt.Println(resConfig.Settings.VisibilityTimeoutSeconds)
 
 	// GetQueue
-	resGet, err := sacloudOp.GetQueue(ctx, queueID)
+	resGet, err := queueOp.Get(ctx, queueID)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resGet.Description.Value.String)
 
 	// GetMessageCount
-	resMessageCount, err := sacloudOp.GetMessageCount(ctx, queueID)
+	resMessageCount, err := queueOp.CountMessages(ctx, queueID)
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resMessageCount)
 
 	// RotateAPIKey
-	if _, err := sacloudOp.RotateAPIKey(ctx, queueID); err != nil {
+	if _, err := queueOp.RotateAPIKey(ctx, queueID); err != nil {
 		panic(err)
 	}
 
 	// ClearQueue
-	if err := sacloudOp.ClearQueue(ctx, queueID); err != nil {
+	if err := queueOp.ClearMessages(ctx, queueID); err != nil {
 		panic(err)
 	}
 
 	// DeleteQueue
-	resDelete, err := sacloudOp.DeleteQueue(ctx, queueID)
+	resDelete, err := queueOp.Delete(ctx, queueID)
 	if err != nil {
 		panic(err)
 	}
@@ -132,17 +124,17 @@ func ExampleSacloudAPI() {
 	// discontinued
 }
 
-func ExampleSimpleMQAPI() {
+func ExampleMessageAPI() {
 	checkEnvs()
 	ctx := context.Background()
 
-	client, err := simplemq.NewSacloudClient()
+	client, err := simplemq.NewQueueClient()
 	if err != nil {
 		panic(err)
 	}
-	sacloudOp := simplemq.NewSacloudOp(client)
+	queueOp := simplemq.NewQueueOp(client)
 
-	resCreate, err := sacloudOp.CreateQueue(ctx, simplemq.CreateQueueRequest{
+	resCreate, err := queueOp.Create(ctx, simplemq.CreateQueueRequest{
 		QueueName: "SDK-Test-Queue",
 	})
 	if err != nil {
@@ -150,30 +142,30 @@ func ExampleSimpleMQAPI() {
 	}
 	// teardown
 	defer func() {
-		if _, err := sacloudOp.DeleteQueue(ctx, getQueueID(resCreate)); err != nil {
+		if _, err := queueOp.Delete(ctx, simplemq.GetQueueID(resCreate)); err != nil {
 			panic(err)
 		}
 	}()
 	queueName := resCreate.Status.QueueName
-	apiKey, err := sacloudOp.RotateAPIKey(ctx, getQueueID(resCreate))
+	apiKey, err := queueOp.RotateAPIKey(ctx, simplemq.GetQueueID(resCreate))
 	if err != nil {
 		panic(err)
 	}
 
-	qClient, err := simplemq.NewSimpleMQClient(queueName, apiKey)
+	messageClient, err := simplemq.NewMessageClient(queueName, apiKey)
 	if err != nil {
 		panic(err)
 	}
 
 	// SendMessage
-	resSend, err := qClient.SendMessage(ctx, "HelloSimpleMQ")
+	resSend, err := messageClient.Send(ctx, "HelloSimpleMQ")
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resSend.Content)
 
 	// ReceiveMessage
-	resReceive, err := qClient.ReceiveMessage(ctx)
+	resReceive, err := messageClient.Receive(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -181,7 +173,7 @@ func ExampleSimpleMQAPI() {
 	messageID := string(resReceive[0].ID)
 
 	// ExtendMessageTimeout
-	resExtend, err := qClient.ExtendMessageTimeout(ctx, messageID)
+	resExtend, err := messageClient.ExtendTimeout(ctx, messageID)
 	if err != nil {
 		panic(err)
 	}
@@ -190,7 +182,7 @@ func ExampleSimpleMQAPI() {
 	fmt.Println(timeExtended.After(timeBefore))
 
 	// DeleteMessage
-	if err := qClient.DeleteMessage(ctx, messageID); err != nil {
+	if err := messageClient.Delete(ctx, messageID); err != nil {
 		panic(err)
 	}
 

@@ -8,7 +8,7 @@ SimpleMQ APIドキュメント: https://manual.sakura.ad.jp/api/cloud/simplemq/
 
 sacloud/simplemq-api-goはさくらのクラウド SimpleMQ APIをGo言語から利用するためのAPIライブラリです。
 
-キューの作成や削除などリソース管理のためのSacloud APIと、メッセージの送受信を行うSimpleMQ APIに分かれています。
+キューの作成や削除などリソース管理のためのQueue APIと、メッセージの送受信を行うMessage APIに分かれています。
 
 ## 使い方
 
@@ -19,7 +19,6 @@ sacloud/simplemq-api-goはさくらのクラウド SimpleMQ APIをGo言語から
 ## TODO
 
 - Testの追加
-- 現在は他のライブラリに合わせて`xxxOp`を提供しているが、`ListQueues`のようなメソッドも提供するか検討
 - SimpleMQ APIでUserAgentを利用
 
 ## License

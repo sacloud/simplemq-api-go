@@ -20,12 +20,12 @@ import (
 	"runtime"
 
 	client "github.com/sacloud/api-client-go"
-	"github.com/sacloud/simplemq-api-go/apis/v1/sacloud"
-	"github.com/sacloud/simplemq-api-go/apis/v1/simplemq"
+	"github.com/sacloud/simplemq-api-go/apis/v1/message"
+	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
 )
 
-// DefaultSacloudAPIRootURL デフォルトのSacloud APIルートURL
-const DefaultSacloudAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/tk1b/api/cloud/1.1"
+// DefaultQueueAPIRootURL デフォルトのQueue APIルートURL
+const DefaultQueueAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/tk1b/api/cloud/1.1"
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
@@ -41,21 +41,21 @@ type DummySecuritySource struct {
 	Token string
 }
 
-func (ss DummySecuritySource) ApiKeyAuth(ctx context.Context, operationName sacloud.OperationName) (sacloud.ApiKeyAuth, error) {
-	return sacloud.ApiKeyAuth{Username: ss.Token}, nil
+func (ss DummySecuritySource) ApiKeyAuth(ctx context.Context, operationName queue.OperationName) (queue.ApiKeyAuth, error) {
+	return queue.ApiKeyAuth{Username: ss.Token}, nil
 }
 
-func NewSacloudClient() (*sacloud.Client, error) {
-	return NewSacloudClientWithApiUrl(DefaultSacloudAPIRootURL)
+func NewQueueClient() (*queue.Client, error) {
+	return NewQueueClientWithApiUrl(DefaultQueueAPIRootURL)
 }
 
-func NewSacloudClientWithApiUrl(apiUrl string) (*sacloud.Client, error) {
+func NewQueueClientWithApiUrl(apiUrl string) (*queue.Client, error) {
 	c, err := client.NewClient(apiUrl, client.WithUserAgent(UserAgent))
 	if err != nil {
 		return nil, err
 	}
 
-	v1Client, err := sacloud.NewClient(c.ServerURL(), DummySecuritySource{Token: "simplemq-client"}, sacloud.WithClient(c.NewHttpRequestDoer()))
+	v1Client, err := queue.NewClient(c.ServerURL(), DummySecuritySource{Token: "simplemq-client"}, queue.WithClient(c.NewHttpRequestDoer()))
 	if err != nil {
 		return nil, fmt.Errorf("create client: %w", err)
 	}
@@ -63,28 +63,28 @@ func NewSacloudClientWithApiUrl(apiUrl string) (*sacloud.Client, error) {
 	return v1Client, nil
 }
 
-// DefaultSimpleMQAPIRootURL デフォルトのSimpleMQ APIルートURL
-const DefaultSimpleMQAPIRootURL = "https://simplemq.tk1b.api.sacloud.jp"
+// DefaultMessageAPIRootURL デフォルトのMessage APIルートURL
+const DefaultMessageAPIRootURL = "https://simplemq.tk1b.api.sacloud.jp"
 
 type ApiKeySecuritySource struct {
 	Token string
 }
 
-func (ss ApiKeySecuritySource) ApiKeyAuth(ctx context.Context, operationName simplemq.OperationName) (simplemq.ApiKeyAuth, error) {
-	return simplemq.ApiKeyAuth{Token: ss.Token}, nil
+func (ss ApiKeySecuritySource) ApiKeyAuth(ctx context.Context, operationName message.OperationName) (message.ApiKeyAuth, error) {
+	return message.ApiKeyAuth{Token: ss.Token}, nil
 }
 
-func NewSimpleMQClient(queueName, apiKey string) (SimpleMQAPI, error) {
-	return NewSimpleMQClientWithApiUrl(DefaultSimpleMQAPIRootURL, queueName, apiKey)
+func NewMessageClient(queueName, apiKey string) (MessageAPI, error) {
+	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, queueName, apiKey)
 }
 
-func NewSimpleMQClientWithApiUrl(apiUrl, queueName, apiKey string) (SimpleMQAPI, error) {
+func NewMessageClientWithApiUrl(apiUrl, queueName, apiKey string) (MessageAPI, error) {
 	// キュー毎にAPIキーが異なるので、キュー単位でclientを作成
 	// TODO: UserAgentを使う
-	v1Client, err := simplemq.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey})
+	v1Client, err := message.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey})
 	if err != nil {
 		return nil, fmt.Errorf("create client: %w", err)
 	}
 
-	return newSimpleMQOp(v1Client, queueName), nil
+	return newMessageOp(v1Client, queueName), nil
 }
