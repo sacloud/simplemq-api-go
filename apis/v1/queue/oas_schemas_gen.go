@@ -571,8 +571,8 @@ func (s *ConfigQueueRequest) SetCommonServiceItem(val ConfigQueueRequestCommonSe
 }
 
 type ConfigQueueRequestCommonServiceItem struct {
-	Description OptString                                   `json:"Description"`
-	Settings    ConfigQueueRequestCommonServiceItemSettings `json:"Settings"`
+	Description OptString `json:"Description"`
+	Settings    Settings  `json:"Settings"`
 }
 
 // GetDescription returns the value of Description.
@@ -581,7 +581,7 @@ func (s *ConfigQueueRequestCommonServiceItem) GetDescription() OptString {
 }
 
 // GetSettings returns the value of Settings.
-func (s *ConfigQueueRequestCommonServiceItem) GetSettings() ConfigQueueRequestCommonServiceItemSettings {
+func (s *ConfigQueueRequestCommonServiceItem) GetSettings() Settings {
 	return s.Settings
 }
 
@@ -591,33 +591,8 @@ func (s *ConfigQueueRequestCommonServiceItem) SetDescription(val OptString) {
 }
 
 // SetSettings sets the value of Settings.
-func (s *ConfigQueueRequestCommonServiceItem) SetSettings(val ConfigQueueRequestCommonServiceItemSettings) {
+func (s *ConfigQueueRequestCommonServiceItem) SetSettings(val Settings) {
 	s.Settings = val
-}
-
-type ConfigQueueRequestCommonServiceItemSettings struct {
-	VisibilityTimeoutSeconds int `json:"VisibilityTimeoutSeconds"`
-	ExpireSeconds            int `json:"ExpireSeconds"`
-}
-
-// GetVisibilityTimeoutSeconds returns the value of VisibilityTimeoutSeconds.
-func (s *ConfigQueueRequestCommonServiceItemSettings) GetVisibilityTimeoutSeconds() int {
-	return s.VisibilityTimeoutSeconds
-}
-
-// GetExpireSeconds returns the value of ExpireSeconds.
-func (s *ConfigQueueRequestCommonServiceItemSettings) GetExpireSeconds() int {
-	return s.ExpireSeconds
-}
-
-// SetVisibilityTimeoutSeconds sets the value of VisibilityTimeoutSeconds.
-func (s *ConfigQueueRequestCommonServiceItemSettings) SetVisibilityTimeoutSeconds(val int) {
-	s.VisibilityTimeoutSeconds = val
-}
-
-// SetExpireSeconds sets the value of ExpireSeconds.
-func (s *ConfigQueueRequestCommonServiceItemSettings) SetExpireSeconds(val int) {
-	s.ExpireSeconds = val
 }
 
 type ConfigQueueUnauthorized Error

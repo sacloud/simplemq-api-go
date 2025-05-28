@@ -11,18 +11,6 @@ func (s *ClearQueueOKSimpleMQ) setDefaults() {
 }
 
 // setDefaults set default value of fields.
-func (s *ConfigQueueRequestCommonServiceItemSettings) setDefaults() {
-	{
-		val := int(30)
-		s.VisibilityTimeoutSeconds = val
-	}
-	{
-		val := int(345600)
-		s.ExpireSeconds = val
-	}
-}
-
-// setDefaults set default value of fields.
 func (s *GetMessageCountOKSimpleMQ) setDefaults() {
 	{
 		val := string("success")

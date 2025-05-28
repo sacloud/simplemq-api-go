@@ -220,18 +220,6 @@ func TestConfigQueueRequestCommonServiceItem_EncodeDecode(t *testing.T) {
 	var typ2 ConfigQueueRequestCommonServiceItem
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
-func TestConfigQueueRequestCommonServiceItemSettings_EncodeDecode(t *testing.T) {
-	var typ ConfigQueueRequestCommonServiceItemSettings
-	typ.SetFake()
-
-	e := jx.Encoder{}
-	typ.Encode(&e)
-	data := e.Bytes()
-	require.True(t, std.Valid(data), "Encoded: %s", data)
-
-	var typ2 ConfigQueueRequestCommonServiceItemSettings
-	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
-}
 func TestConfigQueueUnauthorized_EncodeDecode(t *testing.T) {
 	var typ ConfigQueueUnauthorized
 	typ.SetFake()

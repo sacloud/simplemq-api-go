@@ -73,7 +73,7 @@ func ExampleQueueAPI() {
 	resConfig, err := queueOp.Config(ctx, queueID, queue.ConfigQueueRequest{
 		CommonServiceItem: queue.ConfigQueueRequestCommonServiceItem{
 			Description: queue.NewOptString("SDK-Test-Queueの概要を変更"),
-			Settings: queue.ConfigQueueRequestCommonServiceItemSettings{
+			Settings: queue.Settings{
 				VisibilityTimeoutSeconds: 99,
 				ExpireSeconds:            resCreate.Settings.ExpireSeconds, // NOTE: VisibilityTimeoutSecondsのみを変更
 			},

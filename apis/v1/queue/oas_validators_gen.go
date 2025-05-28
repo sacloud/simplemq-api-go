@@ -17,6 +17,17 @@ func (s *CommonServiceItem) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
+		if err := s.Settings.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "Settings",
+			Error: err,
+		})
+	}
+	if err := func() error {
 		if err := s.Provider.Validate(); err != nil {
 			return err
 		}
@@ -58,6 +69,52 @@ func (s *ConfigQueueOK) Validate() error {
 	}(); err != nil {
 		failures = append(failures, validate.FieldError{
 			Name:  "CommonServiceItem",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *ConfigQueueRequest) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.CommonServiceItem.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "CommonServiceItem",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s *ConfigQueueRequestCommonServiceItem) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := s.Settings.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "Settings",
 			Error: err,
 		})
 	}
@@ -316,6 +373,58 @@ func (s QueueName) Validate() error {
 		Regex:        regexMap["^[0-9a-zA-Z]+(-[0-9a-zA-Z]+)*$"],
 	}).Validate(string(alias)); err != nil {
 		return errors.Wrap(err, "string")
+	}
+	return nil
+}
+
+func (s *Settings) Validate() error {
+	if s == nil {
+		return validate.ErrNilPointer
+	}
+
+	var failures []validate.FieldError
+	if err := func() error {
+		if err := (validate.Int{
+			MinSet:        true,
+			Min:           5,
+			MaxSet:        true,
+			Max:           900,
+			MinExclusive:  false,
+			MaxExclusive:  false,
+			MultipleOfSet: false,
+			MultipleOf:    0,
+		}).Validate(int64(s.VisibilityTimeoutSeconds)); err != nil {
+			return errors.Wrap(err, "int")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "VisibilityTimeoutSeconds",
+			Error: err,
+		})
+	}
+	if err := func() error {
+		if err := (validate.Int{
+			MinSet:        true,
+			Min:           60,
+			MaxSet:        true,
+			Max:           1209600,
+			MinExclusive:  false,
+			MaxExclusive:  false,
+			MultipleOfSet: false,
+			MultipleOf:    0,
+		}).Validate(int64(s.ExpireSeconds)); err != nil {
+			return errors.Wrap(err, "int")
+		}
+		return nil
+	}(); err != nil {
+		failures = append(failures, validate.FieldError{
+			Name:  "ExpireSeconds",
+			Error: err,
+		})
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 	return nil
 }

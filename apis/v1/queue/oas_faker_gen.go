@@ -277,20 +277,6 @@ func (s *ConfigQueueRequestCommonServiceItem) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *ConfigQueueRequestCommonServiceItemSettings) SetFake() {
-	{
-		{
-			s.VisibilityTimeoutSeconds = int(0)
-		}
-	}
-	{
-		{
-			s.ExpireSeconds = int(0)
-		}
-	}
-}
-
-// SetFake set fake values.
 func (s *ConfigQueueUnauthorized) SetFake() {
 	var unwrapped Error
 	{

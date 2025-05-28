@@ -213,6 +213,15 @@ func (c *Client) ConfigQueue(ctx context.Context, request *ConfigQueueRequest, p
 }
 
 func (c *Client) sendConfigQueue(ctx context.Context, request *ConfigQueueRequest, params ConfigQueueParams) (res ConfigQueueRes, err error) {
+	// Validate request before sending.
+	if err := func() error {
+		if err := request.Validate(); err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return res, errors.Wrap(err, "validate")
+	}
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [2]string
