@@ -34,7 +34,7 @@ type messageOp struct {
 	client    *message.Client
 }
 
-func newMessageOp(client *message.Client, queueName string) MessageAPI {
+func NewMessageOp(client *message.Client, queueName string) MessageAPI {
 	return &messageOp{
 		queueName: message.QueueName(queueName),
 		client:    client,

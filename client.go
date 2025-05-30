@@ -74,11 +74,11 @@ func (ss ApiKeySecuritySource) ApiKeyAuth(ctx context.Context, operationName mes
 	return message.ApiKeyAuth{Token: ss.Token}, nil
 }
 
-func NewMessageClient(queueName, apiKey string) (MessageAPI, error) {
-	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, queueName, apiKey)
+func NewMessageClient(apiKey string) (*message.Client, error) {
+	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, apiKey)
 }
 
-func NewMessageClientWithApiUrl(apiUrl, queueName, apiKey string) (MessageAPI, error) {
+func NewMessageClientWithApiUrl(apiUrl, apiKey string) (*message.Client, error) {
 	// キュー毎にAPIキーが異なるので、キュー単位でclientを作成
 	// TODO: UserAgentを使う
 	v1Client, err := message.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey})
@@ -86,5 +86,5 @@ func NewMessageClientWithApiUrl(apiUrl, queueName, apiKey string) (MessageAPI, e
 		return nil, fmt.Errorf("create client: %w", err)
 	}
 
-	return newMessageOp(v1Client, queueName), nil
+	return v1Client, nil
 }

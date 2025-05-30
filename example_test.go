@@ -125,11 +125,11 @@ func ExampleMessageAPI() {
 	checkEnvs()
 	ctx := context.Background()
 
-	client, err := simplemq.NewQueueClient()
+	qClient, err := simplemq.NewQueueClient()
 	if err != nil {
 		panic(err)
 	}
-	queueOp := simplemq.NewQueueOp(client)
+	queueOp := simplemq.NewQueueOp(qClient)
 
 	resCreate, err := queueOp.Create(ctx, simplemq.CreateQueueRequest{
 		QueueName: "SDK-Test-Queue",
@@ -149,20 +149,21 @@ func ExampleMessageAPI() {
 		panic(err)
 	}
 
-	messageClient, err := simplemq.NewMessageClient(queueName, apiKey)
+	client, err := simplemq.NewMessageClient(apiKey)
 	if err != nil {
 		panic(err)
 	}
+	messageOp := simplemq.NewMessageOp(client, queueName)
 
 	// SendMessage
-	resSend, err := messageClient.Send(ctx, "HelloSimpleMQ")
+	resSend, err := messageOp.Send(ctx, "HelloSimpleMQ")
 	if err != nil {
 		panic(err)
 	}
 	fmt.Println(resSend.Content)
 
 	// ReceiveMessage
-	resReceive, err := messageClient.Receive(ctx)
+	resReceive, err := messageOp.Receive(ctx)
 	if err != nil {
 		panic(err)
 	}
@@ -170,7 +171,7 @@ func ExampleMessageAPI() {
 	messageID := string(resReceive[0].ID)
 
 	// ExtendMessageTimeout
-	resExtend, err := messageClient.ExtendTimeout(ctx, messageID)
+	resExtend, err := messageOp.ExtendTimeout(ctx, messageID)
 	if err != nil {
 		panic(err)
 	}
@@ -179,7 +180,7 @@ func ExampleMessageAPI() {
 	fmt.Println(timeExtended.After(timeBefore))
 
 	// DeleteMessage
-	if err := messageClient.Delete(ctx, messageID); err != nil {
+	if err := messageOp.Delete(ctx, messageID); err != nil {
 		panic(err)
 	}
 
