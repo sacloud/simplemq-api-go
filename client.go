@@ -17,9 +17,11 @@ package simplemq
 import (
 	"context"
 	"fmt"
+	"net/http"
 	"runtime"
 
 	client "github.com/sacloud/api-client-go"
+	sacloudhttp "github.com/sacloud/go-http"
 	"github.com/sacloud/simplemq-api-go/apis/v1/message"
 	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
 )
@@ -79,9 +81,21 @@ func NewMessageClient(apiKey string) (*message.Client, error) {
 }
 
 func NewMessageClientWithApiUrl(apiUrl, apiKey string) (*message.Client, error) {
-	// キュー毎にAPIキーが異なるので、キュー単位でclientを作成
-	// TODO: UserAgentを使う
-	v1Client, err := message.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey})
+	c, err := client.NewClient(apiUrl,
+		client.WithUserAgent(UserAgent),
+		client.WithOptions(&client.Options{
+			RequestCustomizers: []sacloudhttp.RequestCustomizer{
+				func(req *http.Request) error {
+					req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiKey))
+					return nil
+				},
+			},
+		}))
+	if err != nil {
+		return nil, err
+	}
+
+	v1Client, err := message.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey}, message.WithClient(c.NewHttpRequestDoer()))
 	if err != nil {
 		return nil, fmt.Errorf("create client: %w", err)
 	}

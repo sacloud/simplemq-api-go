@@ -19,7 +19,6 @@ sacloud/simplemq-api-goはさくらのクラウド SimpleMQ APIをGo言語から
 ## TODO
 
 - Testの追加
-- SimpleMQ APIでUserAgentを利用
 
 ## License
 
