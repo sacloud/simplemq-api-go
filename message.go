@@ -21,9 +21,9 @@ import (
 )
 
 type MessageAPI interface {
-	Send(_ context.Context, content string) (message.NewMessage, error)
+	Send(_ context.Context, content string) (*message.NewMessage, error)
 	Receive(_ context.Context) ([]message.Message, error)
-	ExtendTimeout(_ context.Context, messageID string) (message.Message, error)
+	ExtendTimeout(_ context.Context, messageID string) (*message.Message, error)
 	Delete(_ context.Context, messageID string) error
 }
 
@@ -47,8 +47,7 @@ func (e MessageError) Error() string {
 	return e.Message.Value
 }
 
-func (op *messageOp) Send(ctx context.Context, content string) (message.NewMessage, error) {
-	var empty message.NewMessage
+func (op *messageOp) Send(ctx context.Context, content string) (*message.NewMessage, error) {
 	res, err := op.client.SendMessage(ctx,
 		&message.SendRequest{
 			Content: message.MessageContent(content),
@@ -57,20 +56,20 @@ func (op *messageOp) Send(ctx context.Context, content string) (message.NewMessa
 			QueueName: op.queueName,
 		})
 	if err != nil {
-		return empty, err
+		return nil, err
 	}
 
 	switch r := res.(type) {
 	case *message.SendMessageOK:
-		return r.Message, nil
+		return &r.Message, nil
 	case *message.SendMessageUnauthorized:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	case *message.SendMessageBadRequest:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	case *message.SendMessageInternalServerError:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	default:
-		return empty, MessageError{
+		return nil, MessageError{
 			Message: message.NewOptString("unknown error"),
 		}
 	}
@@ -101,30 +100,29 @@ func (op *messageOp) Receive(ctx context.Context) ([]message.Message, error) {
 	}
 }
 
-func (op *messageOp) ExtendTimeout(ctx context.Context, messageID string) (message.Message, error) {
-	var empty message.Message
+func (op *messageOp) ExtendTimeout(ctx context.Context, messageID string) (*message.Message, error) {
 	res, err := op.client.ExtendMessageTimeout(ctx,
 		message.ExtendMessageTimeoutParams{
 			QueueName: op.queueName,
 			MessageId: message.MessageId(messageID),
 		})
 	if err != nil {
-		return empty, err
+		return nil, err
 	}
 
 	switch r := res.(type) {
 	case *message.ExtendMessageTimeoutOK:
-		return r.Message, nil
+		return &r.Message, nil
 	case *message.ExtendMessageTimeoutUnauthorized:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	case *message.ExtendMessageTimeoutBadRequest:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	case *message.ExtendMessageTimeoutNotFound:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	case *message.ExtendMessageTimeoutInternalServerError:
-		return empty, MessageError(*r)
+		return nil, MessageError(*r)
 	default:
-		return empty, MessageError{
+		return nil, MessageError{
 			Message: message.NewOptString("unknown error"),
 		}
 	}
