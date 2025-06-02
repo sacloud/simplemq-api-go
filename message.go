@@ -16,6 +16,7 @@ package simplemq
 
 import (
 	"context"
+	"errors"
 
 	"github.com/sacloud/simplemq-api-go/apis/v1/message"
 )
@@ -41,12 +42,6 @@ func NewMessageOp(client *message.Client, queueName string) MessageAPI {
 	}
 }
 
-type MessageError message.Error
-
-func (e MessageError) Error() string {
-	return e.Message.Value
-}
-
 func (op *messageOp) Send(ctx context.Context, content string) (*message.NewMessage, error) {
 	res, err := op.client.SendMessage(ctx,
 		&message.SendRequest{
@@ -63,15 +58,13 @@ func (op *messageOp) Send(ctx context.Context, content string) (*message.NewMess
 	case *message.SendMessageOK:
 		return &r.Message, nil
 	case *message.SendMessageUnauthorized:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.SendMessageBadRequest:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.SendMessageInternalServerError:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	default:
-		return nil, MessageError{
-			Message: message.NewOptString("unknown error"),
-		}
+		return nil, errors.New("unknown error")
 	}
 }
 
@@ -88,15 +81,13 @@ func (op *messageOp) Receive(ctx context.Context) ([]message.Message, error) {
 	case *message.ReceiveMessageOK:
 		return r.Messages, nil
 	case *message.ReceiveMessageUnauthorized:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.ReceiveMessageBadRequest:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.ReceiveMessageInternalServerError:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	default:
-		return nil, MessageError{
-			Message: message.NewOptString("unknown error"),
-		}
+		return nil, errors.New("unknown error")
 	}
 }
 
@@ -114,17 +105,15 @@ func (op *messageOp) ExtendTimeout(ctx context.Context, messageID string) (*mess
 	case *message.ExtendMessageTimeoutOK:
 		return &r.Message, nil
 	case *message.ExtendMessageTimeoutUnauthorized:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.ExtendMessageTimeoutBadRequest:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.ExtendMessageTimeoutNotFound:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	case *message.ExtendMessageTimeoutInternalServerError:
-		return nil, MessageError(*r)
+		return nil, errors.New(r.Message.Value)
 	default:
-		return nil, MessageError{
-			Message: message.NewOptString("unknown error"),
-		}
+		return nil, errors.New("unknown error")
 	}
 }
 
@@ -142,16 +131,14 @@ func (op *messageOp) Delete(ctx context.Context, messageID string) error {
 	case *message.DeleteMessageOK:
 		return nil
 	case *message.DeleteMessageUnauthorized:
-		return MessageError(*r)
+		return errors.New(r.Message.Value)
 	case *message.DeleteMessageBadRequest:
-		return MessageError(*r)
+		return errors.New(r.Message.Value)
 	case *message.DeleteMessageNotFound:
-		return MessageError(*r)
+		return errors.New(r.Message.Value)
 	case *message.DeleteMessageInternalServerError:
-		return MessageError(*r)
+		return errors.New(r.Message.Value)
 	default:
-		return MessageError{
-			Message: message.NewOptString("unknown error"),
-		}
+		return errors.New("unknown error")
 	}
 }
