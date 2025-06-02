@@ -91,8 +91,7 @@ func NewMessageClientWithApiUrl(apiUrl, apiKey string, params ...client.ClientPa
 					req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiKey))
 					return nil
 				},
-			}}),
-	},
+			}})},
 		params...)...)
 	if err != nil {
 		return nil, err
