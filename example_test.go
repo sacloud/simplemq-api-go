@@ -56,7 +56,7 @@ func ExampleQueueAPI() {
 		panic(err)
 	}
 	fmt.Println(resCreate.Status.QueueName)
-	queueID := simplemq.GetQueueID(*resCreate)
+	queueID := simplemq.GetQueueID(resCreate)
 
 	// ListQueues
 	resList, err := queueOp.List(ctx)
@@ -64,7 +64,7 @@ func ExampleQueueAPI() {
 		panic(err)
 	}
 	for _, q := range resList {
-		if queueID == simplemq.GetQueueID(q) {
+		if queueID == simplemq.GetQueueID(&q) {
 			fmt.Println(resCreate.Status.QueueName)
 		}
 	}
@@ -139,12 +139,12 @@ func ExampleMessageAPI() {
 	}
 	// teardown
 	defer func() {
-		if err := queueOp.Delete(ctx, simplemq.GetQueueID(*resCreate)); err != nil {
+		if err := queueOp.Delete(ctx, simplemq.GetQueueID(resCreate)); err != nil {
 			panic(err)
 		}
 	}()
-	queueName := simplemq.GetQueueName(*resCreate)
-	apiKey, err := queueOp.RotateAPIKey(ctx, simplemq.GetQueueID(*resCreate))
+	queueName := simplemq.GetQueueName(resCreate)
+	apiKey, err := queueOp.RotateAPIKey(ctx, simplemq.GetQueueID(resCreate))
 	if err != nil {
 		panic(err)
 	}

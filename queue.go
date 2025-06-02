@@ -44,14 +44,14 @@ func NewQueueOp(client *queue.Client) QueueAPI {
 	return &queueOp{client: client}
 }
 
-func GetQueueID(q queue.CommonServiceItem) string {
+func GetQueueID(q *queue.CommonServiceItem) string {
 	if q.ID.IsString() {
 		return q.ID.String
 	}
 	return strconv.Itoa(q.ID.Int)
 }
 
-func GetQueueName(q queue.CommonServiceItem) string {
+func GetQueueName(q *queue.CommonServiceItem) string {
 	return q.Status.GetQueueName()
 }
 
