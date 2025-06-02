@@ -1,39 +1,26 @@
-# sacloud/go-template
+# sacloud/simplemq-api-go
 
-[![Go Reference](https://pkg.go.dev/badge/github.com/sacloud/go-template.svg)](https://pkg.go.dev/github.com/sacloud/go-template)
-[![Tests](https://github.com/sacloud/go-template/workflows/Tests/badge.svg)](https://github.com/sacloud/go-template/actions/workflows/tests.yaml)
-[![Go Report Card](https://goreportcard.com/badge/github.com/sacloud/go-template)](https://goreportcard.com/report/github.com/sacloud/go-template)
+Go言語向けのさくらのクラウド SimpleMQ APIライブラリ
 
-さくらのクラウド向けOSSプロダクトでのプロジェクトテンプレート(Go)
+SimpleMQ APIドキュメント: https://manual.sakura.ad.jp/api/cloud/simplemq/
 
 ## 概要
 
-さくらのクラウド向けOSSプロダクトでGo言語を中心に用いるプロジェクトのためのテンプレート
+sacloud/simplemq-api-goはさくらのクラウド SimpleMQ APIをGo言語から利用するためのAPIライブラリです。
+
+キューの作成や削除などリソース管理のためのQueue APIと、メッセージの送受信を行うMessage APIに分かれています。
 
 ## 使い方
 
-GitHubでリポジトリを作成する際にテンプレートとしてsacloud/go-templateを選択して作成します。  
-![テンプレートの選択](docs/new_repo.png)
+[example_test.go](./example_test.go) を参照。
 
-次に`go-teplate`という文字列を自身のプロジェクトのものに置き換えてください。
+:warning:  v1.0に達するまでは互換性のない形で変更される可能性がありますのでご注意ください。
 
-例: exampleという名前のプロジェクトを作成する場合
+## TODO
 
-```bash
-# 作成したプロジェクトのディレクトリに移動
-cd example
-# 置き換え
-find . -type f | xargs sed -i '' -e "s/go-template/example/g"
-```
-
-### DockerイメージをGitHub Container Registryで公開する際の注意点
-
-デフォルトでは`CR_PAT`が渡されないためGitHub Actionsでのイメージのビルド/プッシュに失敗します。
-また、パッケージを公開したい場合は初回のみ手作業が必要です。
-
-このためDockerイメージをGitHub Container Registryで公開したい場合はオーガニゼーション管理者にご相談ください。
+- Testの追加
 
 ## License
 
-`go-template` Copyright (C) 2022-2025 The sacloud/go-template authors.
+`simplemq-api-go` Copyright (C) 2025- The sacloud/simplemq-api-go authors.
 This project is published under [Apache 2.0 License](LICENSE).
