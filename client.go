@@ -47,12 +47,14 @@ func (ss DummySecuritySource) ApiKeyAuth(ctx context.Context, operationName queu
 	return queue.ApiKeyAuth{Username: ss.Token}, nil
 }
 
-func NewQueueClient() (*queue.Client, error) {
-	return NewQueueClientWithApiUrl(DefaultQueueAPIRootURL)
+func NewQueueClient(params ...client.ClientParam) (*queue.Client, error) {
+	return NewQueueClientWithApiUrl(DefaultQueueAPIRootURL, params...)
 }
 
-func NewQueueClientWithApiUrl(apiUrl string) (*queue.Client, error) {
-	c, err := client.NewClient(apiUrl, client.WithUserAgent(UserAgent))
+func NewQueueClientWithApiUrl(apiUrl string, params ...client.ClientParam) (*queue.Client, error) {
+	c, err := client.NewClient(apiUrl, append([]client.ClientParam{
+		client.WithUserAgent(UserAgent),
+	}, params...)...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,12 +78,12 @@ func (ss ApiKeySecuritySource) ApiKeyAuth(ctx context.Context, operationName mes
 	return message.ApiKeyAuth{Token: ss.Token}, nil
 }
 
-func NewMessageClient(apiKey string) (*message.Client, error) {
-	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, apiKey)
+func NewMessageClient(apiKey string, params ...client.ClientParam) (*message.Client, error) {
+	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, apiKey, params...)
 }
 
-func NewMessageClientWithApiUrl(apiUrl, apiKey string) (*message.Client, error) {
-	c, err := client.NewClient(apiUrl,
+func NewMessageClientWithApiUrl(apiUrl, apiKey string, params ...client.ClientParam) (*message.Client, error) {
+	c, err := client.NewClient(apiUrl, append([]client.ClientParam{
 		client.WithUserAgent(UserAgent),
 		client.WithOptions(&client.Options{
 			RequestCustomizers: []sacloudhttp.RequestCustomizer{
@@ -89,8 +91,8 @@ func NewMessageClientWithApiUrl(apiUrl, apiKey string) (*message.Client, error) 
 					req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiKey))
 					return nil
 				},
-			},
-		}))
+			}})},
+		params...)...)
 	if err != nil {
 		return nil, err
 	}
