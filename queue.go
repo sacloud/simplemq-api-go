@@ -25,7 +25,7 @@ import (
 type QueueAPI interface {
 	List(context.Context) ([]queue.CommonServiceItem, error)
 	Get(_ context.Context, id string) (*queue.CommonServiceItem, error)
-	Create(context.Context, CreateQueueRequest) (*queue.CommonServiceItem, error)
+	Create(context.Context, queue.CreateQueueRequest) (*queue.CommonServiceItem, error)
 	Config(_ context.Context, id string, req queue.ConfigQueueRequest) (*queue.CommonServiceItem, error)
 	Delete(_ context.Context, id string) error
 
@@ -55,21 +55,9 @@ func GetQueueName(q *queue.CommonServiceItem) string {
 	return q.Status.GetQueueName()
 }
 
-type CreateQueueRequest struct {
-	QueueName   string
-	Description string
-}
-
-func (op *queueOp) Create(ctx context.Context, req CreateQueueRequest) (*queue.CommonServiceItem, error) {
-	res, err := op.client.CreateQueue(ctx, &queue.CreateQueueRequest{
-		CommonServiceItem: queue.CreateQueueRequestCommonServiceItem{
-			Name:        queue.QueueName(req.QueueName),
-			Description: queue.NewOptString(req.Description),
-			Provider: queue.CreateQueueRequestCommonServiceItemProvider{
-				Class: queue.NewOptCreateQueueRequestCommonServiceItemProviderClass(queue.CreateQueueRequestCommonServiceItemProviderClassSimplemq),
-			},
-		},
-	})
+func (op *queueOp) Create(ctx context.Context, req queue.CreateQueueRequest) (*queue.CommonServiceItem, error) {
+	req.CommonServiceItem.Provider.Class = queue.NewOptCreateQueueRequestCommonServiceItemProviderClass(queue.CreateQueueRequestCommonServiceItemProviderClassSimplemq)
+	res, err := op.client.CreateQueue(ctx, &req)
 	if err != nil {
 		return nil, err
 	}

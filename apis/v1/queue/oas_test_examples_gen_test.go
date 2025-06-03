@@ -124,30 +124,6 @@ func TestCommonServiceItemID_EncodeDecode(t *testing.T) {
 	var typ2 CommonServiceItemID
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
-func TestCommonServiceItemIcon_EncodeDecode(t *testing.T) {
-	var typ CommonServiceItemIcon
-	typ.SetFake()
-
-	e := jx.Encoder{}
-	typ.Encode(&e)
-	data := e.Bytes()
-	require.True(t, std.Valid(data), "Encoded: %s", data)
-
-	var typ2 CommonServiceItemIcon
-	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
-}
-func TestCommonServiceItemIcon1_EncodeDecode(t *testing.T) {
-	var typ CommonServiceItemIcon1
-	typ.SetFake()
-
-	e := jx.Encoder{}
-	typ.Encode(&e)
-	data := e.Bytes()
-	require.True(t, std.Valid(data), "Encoded: %s", data)
-
-	var typ2 CommonServiceItemIcon1
-	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
-}
 func TestConfigQueueBadRequest_EncodeDecode(t *testing.T) {
 	var typ ConfigQueueBadRequest
 	typ.SetFake()
@@ -622,6 +598,42 @@ func TestGetQueuesUnauthorized_EncodeDecode(t *testing.T) {
 	require.True(t, std.Valid(data), "Encoded: %s", data)
 
 	var typ2 GetQueuesUnauthorized
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestIcon_EncodeDecode(t *testing.T) {
+	var typ Icon
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 Icon
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestIcon1_EncodeDecode(t *testing.T) {
+	var typ Icon1
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 Icon1
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestIcon1ID_EncodeDecode(t *testing.T) {
+	var typ Icon1ID
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 Icon1ID
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
 func TestProvider_EncodeDecode(t *testing.T) {

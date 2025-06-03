@@ -48,9 +48,11 @@ func ExampleQueueAPI() {
 	queueOp := simplemq.NewQueueOp(client)
 
 	// CreateQueue
-	resCreate, err := queueOp.Create(ctx, simplemq.CreateQueueRequest{
-		QueueName:   "SDK-Test-Queue",
-		Description: "SDK-Test-Queueの概要",
+	resCreate, err := queueOp.Create(ctx, queue.CreateQueueRequest{
+		CommonServiceItem: queue.CreateQueueRequestCommonServiceItem{
+			Name:        "SDK-Test-Queue",
+			Description: queue.NewOptString("SDK-Test-Queueの概要"),
+		},
 	})
 	if err != nil {
 		panic(err)
@@ -131,8 +133,10 @@ func ExampleMessageAPI() {
 	}
 	queueOp := simplemq.NewQueueOp(qClient)
 
-	resCreate, err := queueOp.Create(ctx, simplemq.CreateQueueRequest{
-		QueueName: "SDK-Test-Queue",
+	resCreate, err := queueOp.Create(ctx, queue.CreateQueueRequest{
+		CommonServiceItem: queue.CreateQueueRequestCommonServiceItem{
+			Name: "SDK-Test-Queue",
+		},
 	})
 	if err != nil {
 		panic(err)
