@@ -79,6 +79,12 @@ func ExampleQueueAPI() {
 				VisibilityTimeoutSeconds: 99,
 				ExpireSeconds:            resCreate.Settings.ExpireSeconds, // NOTE: VisibilityTimeoutSecondsのみを変更
 			},
+			Tags: []string{"tag1", "tag2"},
+			Icon: queue.NewOptIcon(queue.NewIcon1Icon(
+				queue.Icon1{
+					ID: queue.NewOptIcon1ID(queue.NewStringIcon1ID("112901627751")),
+				},
+			)),
 		},
 	})
 	if err != nil {
