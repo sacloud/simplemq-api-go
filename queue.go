@@ -45,6 +45,9 @@ func NewQueueOp(client *queue.Client) QueueAPI {
 }
 
 func GetQueueID(q *queue.CommonServiceItem) string {
+	if q == nil {
+		return ""
+	}
 	if q.ID.IsString() {
 		return q.ID.String
 	}
@@ -52,6 +55,9 @@ func GetQueueID(q *queue.CommonServiceItem) string {
 }
 
 func GetQueueName(q *queue.CommonServiceItem) string {
+	if q == nil {
+		return ""
+	}
 	return q.Status.GetQueueName()
 }
 
