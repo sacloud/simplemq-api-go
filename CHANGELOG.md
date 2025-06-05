@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.2](https://github.com/sacloud/simplemq-api-go/compare/v0.1.1...v0.1.2) - 2025-06-05
+- govulncheckによる脆弱性チェックを追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/7
+- IconとTagsを作成・更新時に指定可能にする by @a2not in https://github.com/sacloud/simplemq-api-go/pull/9
+- go: bump github.com/ogen-go/ogen from 1.13.0 to 1.14.0 by @dependabot in https://github.com/sacloud/simplemq-api-go/pull/6
+
 ## [v0.1.1](https://github.com/sacloud/simplemq-api-go/compare/v0.1.0...v0.1.1) - 2025-06-03
 - クライアント初期化時にapi-client-goのオプションをサポート by @a2not in https://github.com/sacloud/simplemq-api-go/pull/4
 
