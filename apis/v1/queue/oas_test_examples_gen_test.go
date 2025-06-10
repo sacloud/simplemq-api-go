@@ -420,6 +420,18 @@ func TestError_Examples(t *testing.T) {
 		})
 	}
 }
+func TestExpireSeconds_EncodeDecode(t *testing.T) {
+	var typ ExpireSeconds
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 ExpireSeconds
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
 func TestGetMessageCountBadRequest_EncodeDecode(t *testing.T) {
 	var typ GetMessageCountBadRequest
 	typ.SetFake()
@@ -766,5 +778,17 @@ func TestStatus_EncodeDecode(t *testing.T) {
 	require.True(t, std.Valid(data), "Encoded: %s", data)
 
 	var typ2 Status
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestVisibilityTimeoutSeconds_EncodeDecode(t *testing.T) {
+	var typ VisibilityTimeoutSeconds
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 VisibilityTimeoutSeconds
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }

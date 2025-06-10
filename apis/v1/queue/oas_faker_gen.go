@@ -455,6 +455,15 @@ func (s *Error) SetFake() {
 }
 
 // SetFake set fake values.
+func (s *ExpireSeconds) SetFake() {
+	var unwrapped int
+	{
+		unwrapped = int(0)
+	}
+	*s = ExpireSeconds(unwrapped)
+}
+
+// SetFake set fake values.
 func (s *GetMessageCountBadRequest) SetFake() {
 	var unwrapped Error
 	{
@@ -865,12 +874,12 @@ func (s *RotateAPIKeyUnauthorized) SetFake() {
 func (s *Settings) SetFake() {
 	{
 		{
-			s.VisibilityTimeoutSeconds = int(0)
+			s.VisibilityTimeoutSeconds.SetFake()
 		}
 	}
 	{
 		{
-			s.ExpireSeconds = int(0)
+			s.ExpireSeconds.SetFake()
 		}
 	}
 }
@@ -882,4 +891,13 @@ func (s *Status) SetFake() {
 			s.QueueName = "string"
 		}
 	}
+}
+
+// SetFake set fake values.
+func (s *VisibilityTimeoutSeconds) SetFake() {
+	var unwrapped int
+	{
+		unwrapped = int(0)
+	}
+	*s = VisibilityTimeoutSeconds(unwrapped)
 }

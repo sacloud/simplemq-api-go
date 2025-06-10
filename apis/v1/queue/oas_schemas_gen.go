@@ -785,6 +785,8 @@ func (s *Error) SetErrorMsg(val OptString) {
 	s.ErrorMsg = val
 }
 
+type ExpireSeconds int
+
 type GetMessageCountBadRequest Error
 
 func (*GetMessageCountBadRequest) getMessageCountRes() {}
@@ -1679,29 +1681,27 @@ func (*RotateAPIKeyUnauthorized) rotateAPIKeyRes() {}
 
 // Ref: #/components/schemas/Settings
 type Settings struct {
-	// 可視性タイムアウト (秒).
-	VisibilityTimeoutSeconds int `json:"VisibilityTimeoutSeconds"`
-	// 未処理メッセージ保存期間 (秒).
-	ExpireSeconds int `json:"ExpireSeconds"`
+	VisibilityTimeoutSeconds VisibilityTimeoutSeconds `json:"VisibilityTimeoutSeconds"`
+	ExpireSeconds            ExpireSeconds            `json:"ExpireSeconds"`
 }
 
 // GetVisibilityTimeoutSeconds returns the value of VisibilityTimeoutSeconds.
-func (s *Settings) GetVisibilityTimeoutSeconds() int {
+func (s *Settings) GetVisibilityTimeoutSeconds() VisibilityTimeoutSeconds {
 	return s.VisibilityTimeoutSeconds
 }
 
 // GetExpireSeconds returns the value of ExpireSeconds.
-func (s *Settings) GetExpireSeconds() int {
+func (s *Settings) GetExpireSeconds() ExpireSeconds {
 	return s.ExpireSeconds
 }
 
 // SetVisibilityTimeoutSeconds sets the value of VisibilityTimeoutSeconds.
-func (s *Settings) SetVisibilityTimeoutSeconds(val int) {
+func (s *Settings) SetVisibilityTimeoutSeconds(val VisibilityTimeoutSeconds) {
 	s.VisibilityTimeoutSeconds = val
 }
 
 // SetExpireSeconds sets the value of ExpireSeconds.
-func (s *Settings) SetExpireSeconds(val int) {
+func (s *Settings) SetExpireSeconds(val ExpireSeconds) {
 	s.ExpireSeconds = val
 }
 
@@ -1720,3 +1720,5 @@ func (s *Status) GetQueueName() string {
 func (s *Status) SetQueueName(val string) {
 	s.QueueName = val
 }
+
+type VisibilityTimeoutSeconds int

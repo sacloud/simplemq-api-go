@@ -266,6 +266,23 @@ func (s *DeleteQueueOK) Validate() error {
 	return nil
 }
 
+func (s ExpireSeconds) Validate() error {
+	alias := (int)(s)
+	if err := (validate.Int{
+		MinSet:        true,
+		Min:           60,
+		MaxSet:        true,
+		Max:           1209600,
+		MinExclusive:  false,
+		MaxExclusive:  false,
+		MultipleOfSet: false,
+		MultipleOf:    0,
+	}).Validate(int64(alias)); err != nil {
+		return errors.Wrap(err, "int")
+	}
+	return nil
+}
+
 func (s *GetQueueOK) Validate() error {
 	if s == nil {
 		return validate.ErrNilPointer
@@ -384,17 +401,8 @@ func (s *Settings) Validate() error {
 
 	var failures []validate.FieldError
 	if err := func() error {
-		if err := (validate.Int{
-			MinSet:        true,
-			Min:           5,
-			MaxSet:        true,
-			Max:           900,
-			MinExclusive:  false,
-			MaxExclusive:  false,
-			MultipleOfSet: false,
-			MultipleOf:    0,
-		}).Validate(int64(s.VisibilityTimeoutSeconds)); err != nil {
-			return errors.Wrap(err, "int")
+		if err := s.VisibilityTimeoutSeconds.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -404,17 +412,8 @@ func (s *Settings) Validate() error {
 		})
 	}
 	if err := func() error {
-		if err := (validate.Int{
-			MinSet:        true,
-			Min:           60,
-			MaxSet:        true,
-			Max:           1209600,
-			MinExclusive:  false,
-			MaxExclusive:  false,
-			MultipleOfSet: false,
-			MultipleOf:    0,
-		}).Validate(int64(s.ExpireSeconds)); err != nil {
-			return errors.Wrap(err, "int")
+		if err := s.ExpireSeconds.Validate(); err != nil {
+			return err
 		}
 		return nil
 	}(); err != nil {
@@ -425,6 +424,23 @@ func (s *Settings) Validate() error {
 	}
 	if len(failures) > 0 {
 		return &validate.Error{Fields: failures}
+	}
+	return nil
+}
+
+func (s VisibilityTimeoutSeconds) Validate() error {
+	alias := (int)(s)
+	if err := (validate.Int{
+		MinSet:        true,
+		Min:           5,
+		MaxSet:        true,
+		Max:           900,
+		MinExclusive:  false,
+		MaxExclusive:  false,
+		MultipleOfSet: false,
+		MultipleOf:    0,
+	}).Validate(int64(alias)); err != nil {
+		return errors.Wrap(err, "int")
 	}
 	return nil
 }

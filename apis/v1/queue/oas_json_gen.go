@@ -2304,6 +2304,46 @@ func (s *Error) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
+// Encode encodes ExpireSeconds as json.
+func (s ExpireSeconds) Encode(e *jx.Encoder) {
+	unwrapped := int(s)
+
+	e.Int(unwrapped)
+}
+
+// Decode decodes ExpireSeconds from json.
+func (s *ExpireSeconds) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ExpireSeconds to nil")
+	}
+	var unwrapped int
+	if err := func() error {
+		v, err := d.Int()
+		unwrapped = int(v)
+		if err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return errors.Wrap(err, "alias")
+	}
+	*s = ExpireSeconds(unwrapped)
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s ExpireSeconds) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ExpireSeconds) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
 // Encode encodes GetMessageCountBadRequest as json.
 func (s *GetMessageCountBadRequest) Encode(e *jx.Encoder) {
 	unwrapped := (*Error)(s)
@@ -4354,11 +4394,11 @@ func (s *Settings) Encode(e *jx.Encoder) {
 func (s *Settings) encodeFields(e *jx.Encoder) {
 	{
 		e.FieldStart("VisibilityTimeoutSeconds")
-		e.Int(s.VisibilityTimeoutSeconds)
+		s.VisibilityTimeoutSeconds.Encode(e)
 	}
 	{
 		e.FieldStart("ExpireSeconds")
-		e.Int(s.ExpireSeconds)
+		s.ExpireSeconds.Encode(e)
 	}
 }
 
@@ -4379,9 +4419,7 @@ func (s *Settings) Decode(d *jx.Decoder) error {
 		case "VisibilityTimeoutSeconds":
 			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				v, err := d.Int()
-				s.VisibilityTimeoutSeconds = int(v)
-				if err != nil {
+				if err := s.VisibilityTimeoutSeconds.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -4391,9 +4429,7 @@ func (s *Settings) Decode(d *jx.Decoder) error {
 		case "ExpireSeconds":
 			requiredBitSet[0] |= 1 << 1
 			if err := func() error {
-				v, err := d.Int()
-				s.ExpireSeconds = int(v)
-				if err != nil {
+				if err := s.ExpireSeconds.Decode(d); err != nil {
 					return err
 				}
 				return nil
@@ -4548,6 +4584,46 @@ func (s *Status) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *Status) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes VisibilityTimeoutSeconds as json.
+func (s VisibilityTimeoutSeconds) Encode(e *jx.Encoder) {
+	unwrapped := int(s)
+
+	e.Int(unwrapped)
+}
+
+// Decode decodes VisibilityTimeoutSeconds from json.
+func (s *VisibilityTimeoutSeconds) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode VisibilityTimeoutSeconds to nil")
+	}
+	var unwrapped int
+	if err := func() error {
+		v, err := d.Int()
+		unwrapped = int(v)
+		if err != nil {
+			return err
+		}
+		return nil
+	}(); err != nil {
+		return errors.Wrap(err, "alias")
+	}
+	*s = VisibilityTimeoutSeconds(unwrapped)
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s VisibilityTimeoutSeconds) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *VisibilityTimeoutSeconds) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
