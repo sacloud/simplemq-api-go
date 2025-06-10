@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.1.3](https://github.com/sacloud/simplemq-api-go/compare/v0.1.2...v0.1.3) - 2025-06-10
+- textlint修正 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/10
+- nil check追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/12
+- OpenAPIの更新に合わせたコード生成 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/13
+
 ## [v0.1.2](https://github.com/sacloud/simplemq-api-go/compare/v0.1.1...v0.1.2) - 2025-06-05
 - govulncheckによる脆弱性チェックを追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/7
 - IconとTagsを作成・更新時で指定可能にする by @a2not in https://github.com/sacloud/simplemq-api-go/pull/9
