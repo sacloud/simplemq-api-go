@@ -12,7 +12,7 @@ sacloud/simplemq-api-goはさくらのクラウド SimpleMQ APIをGo言語から
 
 ## 使い方
 
-[example_test.go](./example_test.go) を参照。
+[queue_test.go](./queue_test.go) / [message_test.go](./message_test.go) を参照。
 
 :warning:  v1.0に達するまでは互換性のない形で変更される可能性がありますのでご注意ください。
 
