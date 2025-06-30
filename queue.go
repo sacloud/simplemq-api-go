@@ -65,86 +65,86 @@ func (op *queueOp) Create(ctx context.Context, req queue.CreateQueueRequest) (*q
 	req.CommonServiceItem.Provider.Class = queue.NewOptCreateQueueRequestCommonServiceItemProviderClass(queue.CreateQueueRequestCommonServiceItemProviderClassSimplemq)
 	res, err := op.client.CreateQueue(ctx, &req)
 	if err != nil {
-		return nil, err
+		return nil, NewError("Create", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.CreateQueueCreated:
 		return &r.CommonServiceItem, nil
 	case *queue.CreateQueueUnauthorized:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Create", errors.New(r.ErrorMsg.Value))
 	case *queue.CreateQueueBadRequest:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Create", errors.New(r.ErrorMsg.Value))
 	case *queue.CreateQueueConflict:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Create", errors.New(r.ErrorMsg.Value))
 	case *queue.CreateQueueInternalServerError:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Create", errors.New(r.ErrorMsg.Value))
 	default:
-		return nil, errors.New("unknown error")
+		return nil, NewError("Create", errors.New("unknown error"))
 	}
 }
 
 func (op *queueOp) List(ctx context.Context) ([]queue.CommonServiceItem, error) {
 	res, err := op.client.GetQueues(ctx)
 	if err != nil {
-		return nil, err
+		return nil, NewError("List", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.GetQueuesOK:
 		return r.CommonServiceItems, nil
 	case *queue.GetQueuesUnauthorized:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("List", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueuesBadRequest:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("List", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueuesInternalServerError:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("List", errors.New(r.ErrorMsg.Value))
 	default:
-		return nil, errors.New("unknown error")
+		return nil, NewError("List", errors.New("unknown error"))
 	}
 }
 
 func (op *queueOp) Get(ctx context.Context, id string) (*queue.CommonServiceItem, error) {
 	res, err := op.client.GetQueue(ctx, queue.GetQueueParams{ID: id})
 	if err != nil {
-		return nil, err
+		return nil, NewError("Get", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.GetQueueOK:
 		return &r.CommonServiceItem, nil
 	case *queue.GetQueueUnauthorized:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueueBadRequest:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueueNotFound:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueueInternalServerError:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
 	default:
-		return nil, errors.New("unknown error")
+		return nil, NewError("Get", errors.New("unknown error"))
 	}
 }
 
 func (op *queueOp) Config(ctx context.Context, id string, req queue.ConfigQueueRequest) (*queue.CommonServiceItem, error) {
 	res, err := op.client.ConfigQueue(ctx, &req, queue.ConfigQueueParams{ID: id})
 	if err != nil {
-		return nil, err
+		return nil, NewError("Config", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.ConfigQueueOK:
 		return &r.CommonServiceItem, nil
 	case *queue.ConfigQueueUnauthorized:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Config", errors.New(r.ErrorMsg.Value))
 	case *queue.ConfigQueueBadRequest:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Config", errors.New(r.ErrorMsg.Value))
 	case *queue.ConfigQueueNotFound:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Config", errors.New(r.ErrorMsg.Value))
 	case *queue.ConfigQueueInternalServerError:
-		return nil, errors.New(r.ErrorMsg.Value)
+		return nil, NewError("Config", errors.New(r.ErrorMsg.Value))
 	default:
-		return nil, errors.New("unknown error")
+		return nil, NewError("Config", errors.New("unknown error"))
 	}
 }
 
@@ -153,87 +153,87 @@ func (op *queueOp) Delete(ctx context.Context, id string) error {
 		ID: id,
 	})
 	if err != nil {
-		return err
+		return NewError("Delete", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.DeleteQueueOK:
 		return nil
 	case *queue.DeleteQueueUnauthorized:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("Delete", errors.New(r.ErrorMsg.Value))
 	case *queue.DeleteQueueBadRequest:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("Delete", errors.New(r.ErrorMsg.Value))
 	case *queue.DeleteQueueNotFound:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("Delete", errors.New(r.ErrorMsg.Value))
 	case *queue.DeleteQueueInternalServerError:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("Delete", errors.New(r.ErrorMsg.Value))
 	default:
-		return errors.New("unknown error")
+		return NewError("Delete", errors.New("unknown error"))
 	}
 }
 
 func (op *queueOp) CountMessages(ctx context.Context, id string) (int, error) {
 	res, err := op.client.GetMessageCount(ctx, queue.GetMessageCountParams{ID: id})
 	if err != nil {
-		return 0, err
+		return 0, NewError("CountMessages", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.GetMessageCountOK:
 		return r.SimpleMQ.GetCount(), nil
 	case *queue.GetMessageCountUnauthorized:
-		return 0, errors.New(r.ErrorMsg.Value)
+		return 0, NewError("CountMessages", errors.New(r.ErrorMsg.Value))
 	case *queue.GetMessageCountBadRequest:
-		return 0, errors.New(r.ErrorMsg.Value)
+		return 0, NewError("CountMessages", errors.New(r.ErrorMsg.Value))
 	case *queue.GetMessageCountNotFound:
-		return 0, errors.New(r.ErrorMsg.Value)
+		return 0, NewError("CountMessages", errors.New(r.ErrorMsg.Value))
 	case *queue.GetMessageCountInternalServerError:
-		return 0, errors.New(r.ErrorMsg.Value)
+		return 0, NewError("CountMessages", errors.New(r.ErrorMsg.Value))
 	default:
-		return 0, errors.New("unknown error")
+		return 0, NewError("CountMessages", errors.New("unknown error"))
 	}
 }
 
 func (op *queueOp) RotateAPIKey(ctx context.Context, id string) (string, error) {
 	res, err := op.client.RotateAPIKey(ctx, queue.RotateAPIKeyParams{ID: id})
 	if err != nil {
-		return "", err
+		return "", NewError("RotateAPIKey", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.RotateAPIKeyOK:
 		return r.SimpleMQ.GetApikey(), nil
 	case *queue.RotateAPIKeyUnauthorized:
-		return "", errors.New(r.ErrorMsg.Value)
+		return "", NewError("RotateAPIKey", errors.New(r.ErrorMsg.Value))
 	case *queue.RotateAPIKeyBadRequest:
-		return "", errors.New(r.ErrorMsg.Value)
+		return "", NewError("RotateAPIKey", errors.New(r.ErrorMsg.Value))
 	case *queue.RotateAPIKeyNotFound:
-		return "", errors.New(r.ErrorMsg.Value)
+		return "", NewError("RotateAPIKey", errors.New(r.ErrorMsg.Value))
 	case *queue.RotateAPIKeyInternalServerError:
-		return "", errors.New(r.ErrorMsg.Value)
+		return "", NewError("RotateAPIKey", errors.New(r.ErrorMsg.Value))
 	default:
-		return "", errors.New("unknown error")
+		return "", NewError("RotateAPIKey", errors.New("unknown error"))
 	}
 }
 
 func (op *queueOp) ClearMessages(ctx context.Context, id string) error {
 	res, err := op.client.ClearQueue(ctx, queue.ClearQueueParams{ID: id})
 	if err != nil {
-		return err
+		return NewError("ClearMessages", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.ClearQueueOK:
 		return nil
 	case *queue.ClearQueueUnauthorized:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("ClearMessages", errors.New(r.ErrorMsg.Value))
 	case *queue.ClearQueueBadRequest:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("ClearMessages", errors.New(r.ErrorMsg.Value))
 	case *queue.ClearQueueNotFound:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("ClearMessages", errors.New(r.ErrorMsg.Value))
 	case *queue.ClearQueueInternalServerError:
-		return errors.New(r.ErrorMsg.Value)
+		return NewError("ClearMessages", errors.New(r.ErrorMsg.Value))
 	default:
-		return errors.New("unknown error")
+		return NewError("ClearMessages", errors.New("unknown error"))
 	}
 }
