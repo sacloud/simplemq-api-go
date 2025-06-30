@@ -56,12 +56,12 @@ func NewQueueClientWithApiUrl(apiUrl string, params ...client.ClientParam) (*que
 		client.WithUserAgent(UserAgent),
 	}, params...)...)
 	if err != nil {
-		return nil, err
+		return nil, NewError("NewQueueClientWithApiUrl", err)
 	}
 
 	v1Client, err := queue.NewClient(c.ServerURL(), DummySecuritySource{Token: "simplemq-client"}, queue.WithClient(c.NewHttpRequestDoer()))
 	if err != nil {
-		return nil, fmt.Errorf("create client: %w", err)
+		return nil, NewError("NewQueueClientWithApiUrl", fmt.Errorf("create client: %w", err))
 	}
 
 	return v1Client, nil
@@ -94,12 +94,12 @@ func NewMessageClientWithApiUrl(apiUrl, apiKey string, params ...client.ClientPa
 			}})},
 		params...)...)
 	if err != nil {
-		return nil, err
+		return nil, NewError("NewMessageClientWithApiUrl", err)
 	}
 
 	v1Client, err := message.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey}, message.WithClient(c.NewHttpRequestDoer()))
 	if err != nil {
-		return nil, fmt.Errorf("create client: %w", err)
+		return nil, NewError("NewMessageClientWithApiUrl", fmt.Errorf("create client: %w", err))
 	}
 
 	return v1Client, nil
