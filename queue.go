@@ -24,7 +24,7 @@ import (
 
 type QueueAPI interface {
 	List(context.Context) ([]queue.CommonServiceItem, error)
-	Get(_ context.Context, id string) (*queue.CommonServiceItem, error)
+	Read(_ context.Context, id string) (*queue.CommonServiceItem, error)
 	Create(context.Context, queue.CreateQueueRequest) (*queue.CommonServiceItem, error)
 	Config(_ context.Context, id string, req queue.ConfigQueueRequest) (*queue.CommonServiceItem, error)
 	Delete(_ context.Context, id string) error
@@ -104,25 +104,25 @@ func (op *queueOp) List(ctx context.Context) ([]queue.CommonServiceItem, error) 
 	}
 }
 
-func (op *queueOp) Get(ctx context.Context, id string) (*queue.CommonServiceItem, error) {
+func (op *queueOp) Read(ctx context.Context, id string) (*queue.CommonServiceItem, error) {
 	res, err := op.client.GetQueue(ctx, queue.GetQueueParams{ID: id})
 	if err != nil {
-		return nil, NewError("Get", err)
+		return nil, NewError("Read", err)
 	}
 
 	switch r := res.(type) {
 	case *queue.GetQueueOK:
 		return &r.CommonServiceItem, nil
 	case *queue.GetQueueUnauthorized:
-		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
+		return nil, NewError("Read", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueueBadRequest:
-		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
+		return nil, NewError("Read", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueueNotFound:
-		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
+		return nil, NewError("Read", errors.New(r.ErrorMsg.Value))
 	case *queue.GetQueueInternalServerError:
-		return nil, NewError("Get", errors.New(r.ErrorMsg.Value))
+		return nil, NewError("Read", errors.New(r.ErrorMsg.Value))
 	default:
-		return nil, NewError("Get", errors.New("unknown error"))
+		return nil, NewError("Read", errors.New("unknown error"))
 	}
 }
 

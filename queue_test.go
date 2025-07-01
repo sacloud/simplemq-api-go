@@ -63,10 +63,10 @@ func TestQueueAPI(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, queue.VisibilityTimeoutSeconds(99), resConfig.Settings.VisibilityTimeoutSeconds)
 
-	// GetQueue
-	resGet, err := queueOp.Get(ctx, queueID)
+	// ReadQueue
+	resRead, err := queueOp.Read(ctx, queueID)
 	assert.NoError(t, err)
-	assert.Equal(t, "SDK-Test-Queueの概要を変更", resGet.Description.Value.String)
+	assert.Equal(t, "SDK-Test-Queueの概要を変更", resRead.Description.Value.String)
 
 	// GetMessageCount
 	resMessageCount, err := queueOp.CountMessages(ctx, queueID)
