@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.2.0](https://github.com/sacloud/simplemq-api-go/compare/v0.1.3...v0.2.0) - 2025-07-04
+- Migrate from Example to Test by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/14
+- Use simplemq.Error instead of common error by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/15
+- Rename to Read by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/18
+- Use api-client-go's APIError by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/20
+
 ## [v0.1.3](https://github.com/sacloud/simplemq-api-go/compare/v0.1.2...v0.1.3) - 2025-06-10
 - textlint修正 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/10
 - nil check追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/12
