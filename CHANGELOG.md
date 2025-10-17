@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.1](https://github.com/sacloud/simplemq-api-go/compare/v0.2.0...v0.2.1) - 2025-10-17
+- Update github settings by @a2not in https://github.com/sacloud/simplemq-api-go/pull/26
+- chore(textlint): ignore CHANGELOG.md file by @a2not in https://github.com/sacloud/simplemq-api-go/pull/33
+
 ## [v0.2.0](https://github.com/sacloud/simplemq-api-go/compare/v0.1.3...v0.2.0) - 2025-07-04
 - Migrate from Example to Test by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/14
 - Use simplemq.Error instead of common error by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/15
