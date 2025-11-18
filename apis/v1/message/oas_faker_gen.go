@@ -39,6 +39,15 @@ func (s *DeleteMessageOK) SetFake() {
 }
 
 // SetFake set fake values.
+func (s *DeleteMessageTooManyRequests) SetFake() {
+	var unwrapped Error
+	{
+		unwrapped.SetFake()
+	}
+	*s = DeleteMessageTooManyRequests(unwrapped)
+}
+
+// SetFake set fake values.
 func (s *DeleteMessageUnauthorized) SetFake() {
 	var unwrapped Error
 	{
@@ -100,6 +109,15 @@ func (s *ExtendMessageTimeoutOK) SetFake() {
 			s.Message.SetFake()
 		}
 	}
+}
+
+// SetFake set fake values.
+func (s *ExtendMessageTimeoutTooManyRequests) SetFake() {
+	var unwrapped Error
+	{
+		unwrapped.SetFake()
+	}
+	*s = ExtendMessageTimeoutTooManyRequests(unwrapped)
 }
 
 // SetFake set fake values.
@@ -255,6 +273,15 @@ func (s *ReceiveMessageOK) SetFake() {
 }
 
 // SetFake set fake values.
+func (s *ReceiveMessageTooManyRequests) SetFake() {
+	var unwrapped Error
+	{
+		unwrapped.SetFake()
+	}
+	*s = ReceiveMessageTooManyRequests(unwrapped)
+}
+
+// SetFake set fake values.
 func (s *ReceiveMessageUnauthorized) SetFake() {
 	var unwrapped Error
 	{
@@ -293,6 +320,15 @@ func (s *SendMessageOK) SetFake() {
 			s.Message.SetFake()
 		}
 	}
+}
+
+// SetFake set fake values.
+func (s *SendMessageTooManyRequests) SetFake() {
+	var unwrapped Error
+	{
+		unwrapped.SetFake()
+	}
+	*s = SendMessageTooManyRequests(unwrapped)
 }
 
 // SetFake set fake values.

@@ -61,6 +61,8 @@ func (op *messageOp) Send(ctx context.Context, content string) (*message.NewMess
 		return nil, NewAPIError("Message.Send", 401, errors.New(r.Message.Value))
 	case *message.SendMessageBadRequest:
 		return nil, NewAPIError("Message.Send", 400, errors.New(r.Message.Value))
+	case *message.SendMessageTooManyRequests:
+		return nil, NewAPIError("Message.Send", 429, errors.New(r.Message.Value))
 	case *message.SendMessageInternalServerError:
 		return nil, NewAPIError("Message.Send", 500, errors.New(r.Message.Value))
 	default:
@@ -84,6 +86,8 @@ func (op *messageOp) Receive(ctx context.Context) ([]message.Message, error) {
 		return nil, NewAPIError("Message.Receive", 401, errors.New(r.Message.Value))
 	case *message.ReceiveMessageBadRequest:
 		return nil, NewAPIError("Message.Receive", 400, errors.New(r.Message.Value))
+	case *message.ReceiveMessageTooManyRequests:
+		return nil, NewAPIError("Message.Receive", 429, errors.New(r.Message.Value))
 	case *message.ReceiveMessageInternalServerError:
 		return nil, NewAPIError("Message.Receive", 500, errors.New(r.Message.Value))
 	default:
@@ -110,6 +114,8 @@ func (op *messageOp) ExtendTimeout(ctx context.Context, messageID string) (*mess
 		return nil, NewAPIError("Message.ExtendTimeout", 400, errors.New(r.Message.Value))
 	case *message.ExtendMessageTimeoutNotFound:
 		return nil, NewAPIError("Message.ExtendTimeout", 404, errors.New(r.Message.Value))
+	case *message.ExtendMessageTimeoutTooManyRequests:
+		return nil, NewAPIError("Message.ExtendTimeout", 429, errors.New(r.Message.Value))
 	case *message.ExtendMessageTimeoutInternalServerError:
 		return nil, NewAPIError("Message.ExtendTimeout", 500, errors.New(r.Message.Value))
 	default:
@@ -136,6 +142,8 @@ func (op *messageOp) Delete(ctx context.Context, messageID string) error {
 		return NewAPIError("Message.Delete", 400, errors.New(r.Message.Value))
 	case *message.DeleteMessageNotFound:
 		return NewAPIError("Message.Delete", 404, errors.New(r.Message.Value))
+	case *message.DeleteMessageTooManyRequests:
+		return NewAPIError("Message.Delete", 429, errors.New(r.Message.Value))
 	case *message.DeleteMessageInternalServerError:
 		return NewAPIError("Message.Delete", 500, errors.New(r.Message.Value))
 	default:
