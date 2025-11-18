@@ -59,6 +59,18 @@ func TestDeleteMessageOK_EncodeDecode(t *testing.T) {
 	var typ2 DeleteMessageOK
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
+func TestDeleteMessageTooManyRequests_EncodeDecode(t *testing.T) {
+	var typ DeleteMessageTooManyRequests
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 DeleteMessageTooManyRequests
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
 func TestDeleteMessageUnauthorized_EncodeDecode(t *testing.T) {
 	var typ DeleteMessageUnauthorized
 	typ.SetFake()
@@ -129,6 +141,18 @@ func TestExtendMessageTimeoutOK_EncodeDecode(t *testing.T) {
 	require.True(t, std.Valid(data), "Encoded: %s", data)
 
 	var typ2 ExtendMessageTimeoutOK
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestExtendMessageTimeoutTooManyRequests_EncodeDecode(t *testing.T) {
+	var typ ExtendMessageTimeoutTooManyRequests
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 ExtendMessageTimeoutTooManyRequests
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
 func TestExtendMessageTimeoutUnauthorized_EncodeDecode(t *testing.T) {
@@ -227,6 +251,18 @@ func TestReceiveMessageOK_EncodeDecode(t *testing.T) {
 	var typ2 ReceiveMessageOK
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
+func TestReceiveMessageTooManyRequests_EncodeDecode(t *testing.T) {
+	var typ ReceiveMessageTooManyRequests
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 ReceiveMessageTooManyRequests
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
 func TestReceiveMessageUnauthorized_EncodeDecode(t *testing.T) {
 	var typ ReceiveMessageUnauthorized
 	typ.SetFake()
@@ -273,6 +309,18 @@ func TestSendMessageOK_EncodeDecode(t *testing.T) {
 	require.True(t, std.Valid(data), "Encoded: %s", data)
 
 	var typ2 SendMessageOK
+	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
+}
+func TestSendMessageTooManyRequests_EncodeDecode(t *testing.T) {
+	var typ SendMessageTooManyRequests
+	typ.SetFake()
+
+	e := jx.Encoder{}
+	typ.Encode(&e)
+	data := e.Bytes()
+	require.True(t, std.Valid(data), "Encoded: %s", data)
+
+	var typ2 SendMessageTooManyRequests
 	require.NoError(t, typ2.Decode(jx.DecodeBytes(data)))
 }
 func TestSendMessageUnauthorized_EncodeDecode(t *testing.T) {

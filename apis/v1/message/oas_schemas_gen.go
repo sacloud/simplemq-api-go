@@ -55,6 +55,10 @@ func (s *DeleteMessageOK) SetResult(val string) {
 
 func (*DeleteMessageOK) deleteMessageRes() {}
 
+type DeleteMessageTooManyRequests Error
+
+func (*DeleteMessageTooManyRequests) deleteMessageRes() {}
+
 type DeleteMessageUnauthorized Error
 
 func (*DeleteMessageUnauthorized) deleteMessageRes() {}
@@ -124,6 +128,10 @@ func (s *ExtendMessageTimeoutOK) SetMessage(val Message) {
 }
 
 func (*ExtendMessageTimeoutOK) extendMessageTimeoutRes() {}
+
+type ExtendMessageTimeoutTooManyRequests Error
+
+func (*ExtendMessageTimeoutTooManyRequests) extendMessageTimeoutRes() {}
 
 type ExtendMessageTimeoutUnauthorized Error
 
@@ -413,6 +421,10 @@ func (s *ReceiveMessageOK) SetMessages(val []Message) {
 
 func (*ReceiveMessageOK) receiveMessageRes() {}
 
+type ReceiveMessageTooManyRequests Error
+
+func (*ReceiveMessageTooManyRequests) receiveMessageRes() {}
+
 type ReceiveMessageUnauthorized Error
 
 func (*ReceiveMessageUnauthorized) receiveMessageRes() {}
@@ -451,6 +463,10 @@ func (s *SendMessageOK) SetMessage(val NewMessage) {
 }
 
 func (*SendMessageOK) sendMessageRes() {}
+
+type SendMessageTooManyRequests Error
+
+func (*SendMessageTooManyRequests) sendMessageRes() {}
 
 type SendMessageUnauthorized Error
 
