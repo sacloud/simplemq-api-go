@@ -142,7 +142,7 @@ func (s *CommonServiceItem) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *CommonServiceItemDescription) SetFake() {
+func (s *CommonServiceItemID) SetFake() {
 	var variant string
 
 	{
@@ -152,7 +152,43 @@ func (s *CommonServiceItemDescription) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *CommonServiceItemID) SetFake() {
+func (s *CommonServiceItemIcon) SetFake() {
+	{
+		{
+			s.ID.SetFake()
+		}
+	}
+	{
+		{
+			s.URL.SetFake()
+		}
+	}
+	{
+		{
+			s.Name.SetFake()
+		}
+	}
+	{
+		{
+			s.Scope.SetFake()
+		}
+	}
+	{
+		{
+			s.Tags = nil
+			for i := 0; i < 0; i++ {
+				var elem string
+				{
+					elem = "string"
+				}
+				s.Tags = append(s.Tags, elem)
+			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *CommonServiceItemIconID) SetFake() {
 	var variant string
 
 	{
@@ -245,6 +281,52 @@ func (s *ConfigQueueRequestCommonServiceItem) SetFake() {
 			s.Icon.SetFake()
 		}
 	}
+}
+
+// SetFake set fake values.
+func (s *ConfigQueueRequestCommonServiceItemIcon) SetFake() {
+	{
+		{
+			s.ID.SetFake()
+		}
+	}
+	{
+		{
+			s.URL.SetFake()
+		}
+	}
+	{
+		{
+			s.Name.SetFake()
+		}
+	}
+	{
+		{
+			s.Scope.SetFake()
+		}
+	}
+	{
+		{
+			s.Tags = nil
+			for i := 0; i < 0; i++ {
+				var elem string
+				{
+					elem = "string"
+				}
+				s.Tags = append(s.Tags, elem)
+			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *ConfigQueueRequestCommonServiceItemIconID) SetFake() {
+	var variant string
+
+	{
+		variant = "string"
+	}
+	s.SetString(variant)
 }
 
 // SetFake set fake values.
@@ -345,6 +427,52 @@ func (s *CreateQueueRequestCommonServiceItem) SetFake() {
 			s.Icon.SetFake()
 		}
 	}
+}
+
+// SetFake set fake values.
+func (s *CreateQueueRequestCommonServiceItemIcon) SetFake() {
+	{
+		{
+			s.ID.SetFake()
+		}
+	}
+	{
+		{
+			s.URL.SetFake()
+		}
+	}
+	{
+		{
+			s.Name.SetFake()
+		}
+	}
+	{
+		{
+			s.Scope.SetFake()
+		}
+	}
+	{
+		{
+			s.Tags = nil
+			for i := 0; i < 0; i++ {
+				var elem string
+				{
+					elem = "string"
+				}
+				s.Tags = append(s.Tags, elem)
+			}
+		}
+	}
+}
+
+// SetFake set fake values.
+func (s *CreateQueueRequestCommonServiceItemIconID) SetFake() {
+	var variant string
+
+	{
+		variant = "string"
+	}
+	s.SetString(variant)
 }
 
 // SetFake set fake values.
@@ -641,62 +769,6 @@ func (s *GetQueuesUnauthorized) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *Icon) SetFake() {
-	var variant struct{}
-
-	{
-		variant = struct{}{}
-	}
-	s.SetNull(variant)
-}
-
-// SetFake set fake values.
-func (s *Icon1) SetFake() {
-	{
-		{
-			s.ID.SetFake()
-		}
-	}
-	{
-		{
-			s.URL.SetFake()
-		}
-	}
-	{
-		{
-			s.Name.SetFake()
-		}
-	}
-	{
-		{
-			s.Scope.SetFake()
-		}
-	}
-	{
-		{
-			s.Tags = nil
-			for i := 0; i < 0; i++ {
-				var elem string
-				{
-					elem = "string"
-				}
-				s.Tags = append(s.Tags, elem)
-			}
-		}
-	}
-}
-
-// SetFake set fake values.
-func (s *Icon1ID) SetFake() {
-	var variant string
-
-	{
-		variant = "string"
-	}
-	s.SetString(variant)
-}
-
-// SetFake set fake values.
 func (s *OptBool) SetFake() {
 	var elem bool
 	{
@@ -715,8 +787,8 @@ func (s *OptClearQueueOKSimpleMQ) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *OptCommonServiceItemDescription) SetFake() {
-	var elem CommonServiceItemDescription
+func (s *OptCommonServiceItemIconID) SetFake() {
+	var elem CommonServiceItemIconID
 	{
 		elem.SetFake()
 	}
@@ -724,8 +796,8 @@ func (s *OptCommonServiceItemDescription) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *OptCreateQueueRequestCommonServiceItemProviderClass) SetFake() {
-	var elem CreateQueueRequestCommonServiceItemProviderClass
+func (s *OptConfigQueueRequestCommonServiceItemIconID) SetFake() {
+	var elem ConfigQueueRequestCommonServiceItemIconID
 	{
 		elem.SetFake()
 	}
@@ -733,17 +805,8 @@ func (s *OptCreateQueueRequestCommonServiceItemProviderClass) SetFake() {
 }
 
 // SetFake set fake values.
-func (s *OptIcon) SetFake() {
-	var elem Icon
-	{
-		elem.SetFake()
-	}
-	s.SetTo(elem)
-}
-
-// SetFake set fake values.
-func (s *OptIcon1ID) SetFake() {
-	var elem Icon1ID
+func (s *OptCreateQueueRequestCommonServiceItemIconID) SetFake() {
+	var elem CreateQueueRequestCommonServiceItemIconID
 	{
 		elem.SetFake()
 	}
@@ -757,6 +820,30 @@ func (s *OptInt) SetFake() {
 		elem = int(0)
 	}
 	s.SetTo(elem)
+}
+
+// SetFake set fake values.
+func (s *OptNilCommonServiceItemIcon) SetFake() {
+	s.Null = true
+	s.Set = true
+}
+
+// SetFake set fake values.
+func (s *OptNilConfigQueueRequestCommonServiceItemIcon) SetFake() {
+	s.Null = true
+	s.Set = true
+}
+
+// SetFake set fake values.
+func (s *OptNilCreateQueueRequestCommonServiceItemIcon) SetFake() {
+	s.Null = true
+	s.Set = true
+}
+
+// SetFake set fake values.
+func (s *OptNilString) SetFake() {
+	s.Null = true
+	s.Set = true
 }
 
 // SetFake set fake values.

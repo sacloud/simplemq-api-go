@@ -53,11 +53,9 @@ func TestQueueAPI(t *testing.T) {
 				ExpireSeconds:            resCreate.Settings.ExpireSeconds,
 			},
 			Tags: []string{"tag1", "tag2"},
-			Icon: queue.NewOptIcon(queue.NewIcon1Icon(
-				queue.Icon1{
-					ID: queue.NewOptIcon1ID(queue.NewStringIcon1ID("112901627751")),
-				},
-			)),
+			Icon: queue.NewOptNilConfigQueueRequestCommonServiceItemIcon(queue.ConfigQueueRequestCommonServiceItemIcon{
+				ID: queue.NewOptConfigQueueRequestCommonServiceItemIconID(queue.NewStringConfigQueueRequestCommonServiceItemIconID("112901627751")),
+			}),
 		},
 	})
 	assert.NoError(t, err)
@@ -66,7 +64,7 @@ func TestQueueAPI(t *testing.T) {
 	// ReadQueue
 	resRead, err := queueOp.Read(ctx, queueID)
 	assert.NoError(t, err)
-	assert.Equal(t, "SDK-Test-Queueの概要を変更", resRead.Description.Value.String)
+	assert.Equal(t, "SDK-Test-Queueの概要を変更", resRead.Description.Value)
 
 	// GetMessageCount
 	resMessageCount, err := queueOp.CountMessages(ctx, queueID)
