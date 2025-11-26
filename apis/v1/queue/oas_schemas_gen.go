@@ -105,18 +105,18 @@ func (*ClearQueueUnauthorized) clearQueueRes() {}
 type CommonServiceItem struct {
 	ID CommonServiceItemID `json:"ID"`
 	// リソース名.
-	Name         string                          `json:"Name"`
-	Description  OptCommonServiceItemDescription `json:"Description"`
-	Settings     Settings                        `json:"Settings"`
-	SettingsHash string                          `json:"SettingsHash"`
-	Status       Status                          `json:"Status"`
-	ServiceClass string                          `json:"ServiceClass"`
-	Availability string                          `json:"Availability"`
-	CreatedAt    time.Time                       `json:"CreatedAt"`
-	ModifiedAt   time.Time                       `json:"ModifiedAt"`
-	Provider     Provider                        `json:"Provider"`
-	Icon         OptIcon                         `json:"Icon"`
-	Tags         []string                        `json:"Tags"`
+	Name         string                      `json:"Name"`
+	Description  OptNilString                `json:"Description"`
+	Settings     Settings                    `json:"Settings"`
+	SettingsHash string                      `json:"SettingsHash"`
+	Status       Status                      `json:"Status"`
+	ServiceClass string                      `json:"ServiceClass"`
+	Availability string                      `json:"Availability"`
+	CreatedAt    time.Time                   `json:"CreatedAt"`
+	ModifiedAt   time.Time                   `json:"ModifiedAt"`
+	Provider     Provider                    `json:"Provider"`
+	Icon         OptNilCommonServiceItemIcon `json:"Icon"`
+	Tags         []string                    `json:"Tags"`
 }
 
 // GetID returns the value of ID.
@@ -130,7 +130,7 @@ func (s *CommonServiceItem) GetName() string {
 }
 
 // GetDescription returns the value of Description.
-func (s *CommonServiceItem) GetDescription() OptCommonServiceItemDescription {
+func (s *CommonServiceItem) GetDescription() OptNilString {
 	return s.Description
 }
 
@@ -175,7 +175,7 @@ func (s *CommonServiceItem) GetProvider() Provider {
 }
 
 // GetIcon returns the value of Icon.
-func (s *CommonServiceItem) GetIcon() OptIcon {
+func (s *CommonServiceItem) GetIcon() OptNilCommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -195,7 +195,7 @@ func (s *CommonServiceItem) SetName(val string) {
 }
 
 // SetDescription sets the value of Description.
-func (s *CommonServiceItem) SetDescription(val OptCommonServiceItemDescription) {
+func (s *CommonServiceItem) SetDescription(val OptNilString) {
 	s.Description = val
 }
 
@@ -240,81 +240,13 @@ func (s *CommonServiceItem) SetProvider(val Provider) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *CommonServiceItem) SetIcon(val OptIcon) {
+func (s *CommonServiceItem) SetIcon(val OptNilCommonServiceItemIcon) {
 	s.Icon = val
 }
 
 // SetTags sets the value of Tags.
 func (s *CommonServiceItem) SetTags(val []string) {
 	s.Tags = val
-}
-
-// CommonServiceItemDescription represents sum type.
-type CommonServiceItemDescription struct {
-	Type   CommonServiceItemDescriptionType // switch on this field
-	String string
-	Null   struct{}
-}
-
-// CommonServiceItemDescriptionType is oneOf type of CommonServiceItemDescription.
-type CommonServiceItemDescriptionType string
-
-// Possible values for CommonServiceItemDescriptionType.
-const (
-	StringCommonServiceItemDescription CommonServiceItemDescriptionType = "string"
-	NullCommonServiceItemDescription   CommonServiceItemDescriptionType = "struct{}"
-)
-
-// IsString reports whether CommonServiceItemDescription is string.
-func (s CommonServiceItemDescription) IsString() bool {
-	return s.Type == StringCommonServiceItemDescription
-}
-
-// IsNull reports whether CommonServiceItemDescription is struct{}.
-func (s CommonServiceItemDescription) IsNull() bool {
-	return s.Type == NullCommonServiceItemDescription
-}
-
-// SetString sets CommonServiceItemDescription to string.
-func (s *CommonServiceItemDescription) SetString(v string) {
-	s.Type = StringCommonServiceItemDescription
-	s.String = v
-}
-
-// GetString returns string and true boolean if CommonServiceItemDescription is string.
-func (s CommonServiceItemDescription) GetString() (v string, ok bool) {
-	if !s.IsString() {
-		return v, false
-	}
-	return s.String, true
-}
-
-// NewStringCommonServiceItemDescription returns new CommonServiceItemDescription from string.
-func NewStringCommonServiceItemDescription(v string) CommonServiceItemDescription {
-	var s CommonServiceItemDescription
-	s.SetString(v)
-	return s
-}
-
-// SetNull sets CommonServiceItemDescription to struct{}.
-func (s *CommonServiceItemDescription) SetNull(v struct{}) {
-	s.Type = NullCommonServiceItemDescription
-	s.Null = v
-}
-
-// GetNull returns struct{} and true boolean if CommonServiceItemDescription is struct{}.
-func (s CommonServiceItemDescription) GetNull() (v struct{}, ok bool) {
-	if !s.IsNull() {
-		return v, false
-	}
-	return s.Null, true
-}
-
-// NewNullCommonServiceItemDescription returns new CommonServiceItemDescription from struct{}.
-func NewNullCommonServiceItemDescription(v struct{}) CommonServiceItemDescription {
-	var s CommonServiceItemDescription
-	s.SetNull(v)
-	return s
 }
 
 // CommonServiceItemID represents sum type.
@@ -377,6 +309,130 @@ func (s CommonServiceItemID) GetInt() (v int, ok bool) {
 // NewIntCommonServiceItemID returns new CommonServiceItemID from int.
 func NewIntCommonServiceItemID(v int) CommonServiceItemID {
 	var s CommonServiceItemID
+	s.SetInt(v)
+	return s
+}
+
+type CommonServiceItemIcon struct {
+	// 0を指定することでIconなしに設定することが出来ます.
+	ID    OptCommonServiceItemIconID `json:"ID"`
+	URL   OptString                  `json:"URL"`
+	Name  OptString                  `json:"Name"`
+	Scope OptString                  `json:"Scope"`
+	Tags  []string                   `json:"Tags"`
+}
+
+// GetID returns the value of ID.
+func (s *CommonServiceItemIcon) GetID() OptCommonServiceItemIconID {
+	return s.ID
+}
+
+// GetURL returns the value of URL.
+func (s *CommonServiceItemIcon) GetURL() OptString {
+	return s.URL
+}
+
+// GetName returns the value of Name.
+func (s *CommonServiceItemIcon) GetName() OptString {
+	return s.Name
+}
+
+// GetScope returns the value of Scope.
+func (s *CommonServiceItemIcon) GetScope() OptString {
+	return s.Scope
+}
+
+// GetTags returns the value of Tags.
+func (s *CommonServiceItemIcon) GetTags() []string {
+	return s.Tags
+}
+
+// SetID sets the value of ID.
+func (s *CommonServiceItemIcon) SetID(val OptCommonServiceItemIconID) {
+	s.ID = val
+}
+
+// SetURL sets the value of URL.
+func (s *CommonServiceItemIcon) SetURL(val OptString) {
+	s.URL = val
+}
+
+// SetName sets the value of Name.
+func (s *CommonServiceItemIcon) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetScope sets the value of Scope.
+func (s *CommonServiceItemIcon) SetScope(val OptString) {
+	s.Scope = val
+}
+
+// SetTags sets the value of Tags.
+func (s *CommonServiceItemIcon) SetTags(val []string) {
+	s.Tags = val
+}
+
+// 0を指定することでIconなしに設定することが出来ます.
+// CommonServiceItemIconID represents sum type.
+type CommonServiceItemIconID struct {
+	Type   CommonServiceItemIconIDType // switch on this field
+	String string
+	Int    int
+}
+
+// CommonServiceItemIconIDType is oneOf type of CommonServiceItemIconID.
+type CommonServiceItemIconIDType string
+
+// Possible values for CommonServiceItemIconIDType.
+const (
+	StringCommonServiceItemIconID CommonServiceItemIconIDType = "string"
+	IntCommonServiceItemIconID    CommonServiceItemIconIDType = "int"
+)
+
+// IsString reports whether CommonServiceItemIconID is string.
+func (s CommonServiceItemIconID) IsString() bool { return s.Type == StringCommonServiceItemIconID }
+
+// IsInt reports whether CommonServiceItemIconID is int.
+func (s CommonServiceItemIconID) IsInt() bool { return s.Type == IntCommonServiceItemIconID }
+
+// SetString sets CommonServiceItemIconID to string.
+func (s *CommonServiceItemIconID) SetString(v string) {
+	s.Type = StringCommonServiceItemIconID
+	s.String = v
+}
+
+// GetString returns string and true boolean if CommonServiceItemIconID is string.
+func (s CommonServiceItemIconID) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringCommonServiceItemIconID returns new CommonServiceItemIconID from string.
+func NewStringCommonServiceItemIconID(v string) CommonServiceItemIconID {
+	var s CommonServiceItemIconID
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets CommonServiceItemIconID to int.
+func (s *CommonServiceItemIconID) SetInt(v int) {
+	s.Type = IntCommonServiceItemIconID
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if CommonServiceItemIconID is int.
+func (s CommonServiceItemIconID) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntCommonServiceItemIconID returns new CommonServiceItemIconID from int.
+func NewIntCommonServiceItemIconID(v int) CommonServiceItemIconID {
+	var s CommonServiceItemIconID
 	s.SetInt(v)
 	return s
 }
@@ -447,10 +503,10 @@ func (s *ConfigQueueRequest) SetCommonServiceItem(val ConfigQueueRequestCommonSe
 }
 
 type ConfigQueueRequestCommonServiceItem struct {
-	Description OptString `json:"Description"`
-	Settings    Settings  `json:"Settings"`
-	Tags        []string  `json:"Tags"`
-	Icon        OptIcon   `json:"Icon"`
+	Description OptString                                     `json:"Description"`
+	Settings    Settings                                      `json:"Settings"`
+	Tags        []string                                      `json:"Tags"`
+	Icon        OptNilConfigQueueRequestCommonServiceItemIcon `json:"Icon"`
 }
 
 // GetDescription returns the value of Description.
@@ -469,7 +525,7 @@ func (s *ConfigQueueRequestCommonServiceItem) GetTags() []string {
 }
 
 // GetIcon returns the value of Icon.
-func (s *ConfigQueueRequestCommonServiceItem) GetIcon() OptIcon {
+func (s *ConfigQueueRequestCommonServiceItem) GetIcon() OptNilConfigQueueRequestCommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -489,8 +545,136 @@ func (s *ConfigQueueRequestCommonServiceItem) SetTags(val []string) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *ConfigQueueRequestCommonServiceItem) SetIcon(val OptIcon) {
+func (s *ConfigQueueRequestCommonServiceItem) SetIcon(val OptNilConfigQueueRequestCommonServiceItemIcon) {
 	s.Icon = val
+}
+
+type ConfigQueueRequestCommonServiceItemIcon struct {
+	// 0を指定することでIconなしに設定することが出来ます.
+	ID    OptConfigQueueRequestCommonServiceItemIconID `json:"ID"`
+	URL   OptString                                    `json:"URL"`
+	Name  OptString                                    `json:"Name"`
+	Scope OptString                                    `json:"Scope"`
+	Tags  []string                                     `json:"Tags"`
+}
+
+// GetID returns the value of ID.
+func (s *ConfigQueueRequestCommonServiceItemIcon) GetID() OptConfigQueueRequestCommonServiceItemIconID {
+	return s.ID
+}
+
+// GetURL returns the value of URL.
+func (s *ConfigQueueRequestCommonServiceItemIcon) GetURL() OptString {
+	return s.URL
+}
+
+// GetName returns the value of Name.
+func (s *ConfigQueueRequestCommonServiceItemIcon) GetName() OptString {
+	return s.Name
+}
+
+// GetScope returns the value of Scope.
+func (s *ConfigQueueRequestCommonServiceItemIcon) GetScope() OptString {
+	return s.Scope
+}
+
+// GetTags returns the value of Tags.
+func (s *ConfigQueueRequestCommonServiceItemIcon) GetTags() []string {
+	return s.Tags
+}
+
+// SetID sets the value of ID.
+func (s *ConfigQueueRequestCommonServiceItemIcon) SetID(val OptConfigQueueRequestCommonServiceItemIconID) {
+	s.ID = val
+}
+
+// SetURL sets the value of URL.
+func (s *ConfigQueueRequestCommonServiceItemIcon) SetURL(val OptString) {
+	s.URL = val
+}
+
+// SetName sets the value of Name.
+func (s *ConfigQueueRequestCommonServiceItemIcon) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetScope sets the value of Scope.
+func (s *ConfigQueueRequestCommonServiceItemIcon) SetScope(val OptString) {
+	s.Scope = val
+}
+
+// SetTags sets the value of Tags.
+func (s *ConfigQueueRequestCommonServiceItemIcon) SetTags(val []string) {
+	s.Tags = val
+}
+
+// 0を指定することでIconなしに設定することが出来ます.
+// ConfigQueueRequestCommonServiceItemIconID represents sum type.
+type ConfigQueueRequestCommonServiceItemIconID struct {
+	Type   ConfigQueueRequestCommonServiceItemIconIDType // switch on this field
+	String string
+	Int    int
+}
+
+// ConfigQueueRequestCommonServiceItemIconIDType is oneOf type of ConfigQueueRequestCommonServiceItemIconID.
+type ConfigQueueRequestCommonServiceItemIconIDType string
+
+// Possible values for ConfigQueueRequestCommonServiceItemIconIDType.
+const (
+	StringConfigQueueRequestCommonServiceItemIconID ConfigQueueRequestCommonServiceItemIconIDType = "string"
+	IntConfigQueueRequestCommonServiceItemIconID    ConfigQueueRequestCommonServiceItemIconIDType = "int"
+)
+
+// IsString reports whether ConfigQueueRequestCommonServiceItemIconID is string.
+func (s ConfigQueueRequestCommonServiceItemIconID) IsString() bool {
+	return s.Type == StringConfigQueueRequestCommonServiceItemIconID
+}
+
+// IsInt reports whether ConfigQueueRequestCommonServiceItemIconID is int.
+func (s ConfigQueueRequestCommonServiceItemIconID) IsInt() bool {
+	return s.Type == IntConfigQueueRequestCommonServiceItemIconID
+}
+
+// SetString sets ConfigQueueRequestCommonServiceItemIconID to string.
+func (s *ConfigQueueRequestCommonServiceItemIconID) SetString(v string) {
+	s.Type = StringConfigQueueRequestCommonServiceItemIconID
+	s.String = v
+}
+
+// GetString returns string and true boolean if ConfigQueueRequestCommonServiceItemIconID is string.
+func (s ConfigQueueRequestCommonServiceItemIconID) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringConfigQueueRequestCommonServiceItemIconID returns new ConfigQueueRequestCommonServiceItemIconID from string.
+func NewStringConfigQueueRequestCommonServiceItemIconID(v string) ConfigQueueRequestCommonServiceItemIconID {
+	var s ConfigQueueRequestCommonServiceItemIconID
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets ConfigQueueRequestCommonServiceItemIconID to int.
+func (s *ConfigQueueRequestCommonServiceItemIconID) SetInt(v int) {
+	s.Type = IntConfigQueueRequestCommonServiceItemIconID
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if ConfigQueueRequestCommonServiceItemIconID is int.
+func (s ConfigQueueRequestCommonServiceItemIconID) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntConfigQueueRequestCommonServiceItemIconID returns new ConfigQueueRequestCommonServiceItemIconID from int.
+func NewIntConfigQueueRequestCommonServiceItemIconID(v int) ConfigQueueRequestCommonServiceItemIconID {
+	var s ConfigQueueRequestCommonServiceItemIconID
+	s.SetInt(v)
+	return s
 }
 
 type ConfigQueueUnauthorized Error
@@ -563,11 +747,11 @@ func (s *CreateQueueRequest) SetCommonServiceItem(val CreateQueueRequestCommonSe
 }
 
 type CreateQueueRequestCommonServiceItem struct {
-	Name        QueueName                                   `json:"Name"`
-	Description OptString                                   `json:"Description"`
-	Provider    CreateQueueRequestCommonServiceItemProvider `json:"Provider"`
-	Tags        []string                                    `json:"Tags"`
-	Icon        OptIcon                                     `json:"Icon"`
+	Name        QueueName                                     `json:"Name"`
+	Description OptString                                     `json:"Description"`
+	Provider    CreateQueueRequestCommonServiceItemProvider   `json:"Provider"`
+	Tags        []string                                      `json:"Tags"`
+	Icon        OptNilCreateQueueRequestCommonServiceItemIcon `json:"Icon"`
 }
 
 // GetName returns the value of Name.
@@ -591,7 +775,7 @@ func (s *CreateQueueRequestCommonServiceItem) GetTags() []string {
 }
 
 // GetIcon returns the value of Icon.
-func (s *CreateQueueRequestCommonServiceItem) GetIcon() OptIcon {
+func (s *CreateQueueRequestCommonServiceItem) GetIcon() OptNilCreateQueueRequestCommonServiceItemIcon {
 	return s.Icon
 }
 
@@ -616,21 +800,149 @@ func (s *CreateQueueRequestCommonServiceItem) SetTags(val []string) {
 }
 
 // SetIcon sets the value of Icon.
-func (s *CreateQueueRequestCommonServiceItem) SetIcon(val OptIcon) {
+func (s *CreateQueueRequestCommonServiceItem) SetIcon(val OptNilCreateQueueRequestCommonServiceItemIcon) {
 	s.Icon = val
 }
 
+type CreateQueueRequestCommonServiceItemIcon struct {
+	// 0を指定することでIconなしに設定することが出来ます.
+	ID    OptCreateQueueRequestCommonServiceItemIconID `json:"ID"`
+	URL   OptString                                    `json:"URL"`
+	Name  OptString                                    `json:"Name"`
+	Scope OptString                                    `json:"Scope"`
+	Tags  []string                                     `json:"Tags"`
+}
+
+// GetID returns the value of ID.
+func (s *CreateQueueRequestCommonServiceItemIcon) GetID() OptCreateQueueRequestCommonServiceItemIconID {
+	return s.ID
+}
+
+// GetURL returns the value of URL.
+func (s *CreateQueueRequestCommonServiceItemIcon) GetURL() OptString {
+	return s.URL
+}
+
+// GetName returns the value of Name.
+func (s *CreateQueueRequestCommonServiceItemIcon) GetName() OptString {
+	return s.Name
+}
+
+// GetScope returns the value of Scope.
+func (s *CreateQueueRequestCommonServiceItemIcon) GetScope() OptString {
+	return s.Scope
+}
+
+// GetTags returns the value of Tags.
+func (s *CreateQueueRequestCommonServiceItemIcon) GetTags() []string {
+	return s.Tags
+}
+
+// SetID sets the value of ID.
+func (s *CreateQueueRequestCommonServiceItemIcon) SetID(val OptCreateQueueRequestCommonServiceItemIconID) {
+	s.ID = val
+}
+
+// SetURL sets the value of URL.
+func (s *CreateQueueRequestCommonServiceItemIcon) SetURL(val OptString) {
+	s.URL = val
+}
+
+// SetName sets the value of Name.
+func (s *CreateQueueRequestCommonServiceItemIcon) SetName(val OptString) {
+	s.Name = val
+}
+
+// SetScope sets the value of Scope.
+func (s *CreateQueueRequestCommonServiceItemIcon) SetScope(val OptString) {
+	s.Scope = val
+}
+
+// SetTags sets the value of Tags.
+func (s *CreateQueueRequestCommonServiceItemIcon) SetTags(val []string) {
+	s.Tags = val
+}
+
+// 0を指定することでIconなしに設定することが出来ます.
+// CreateQueueRequestCommonServiceItemIconID represents sum type.
+type CreateQueueRequestCommonServiceItemIconID struct {
+	Type   CreateQueueRequestCommonServiceItemIconIDType // switch on this field
+	String string
+	Int    int
+}
+
+// CreateQueueRequestCommonServiceItemIconIDType is oneOf type of CreateQueueRequestCommonServiceItemIconID.
+type CreateQueueRequestCommonServiceItemIconIDType string
+
+// Possible values for CreateQueueRequestCommonServiceItemIconIDType.
+const (
+	StringCreateQueueRequestCommonServiceItemIconID CreateQueueRequestCommonServiceItemIconIDType = "string"
+	IntCreateQueueRequestCommonServiceItemIconID    CreateQueueRequestCommonServiceItemIconIDType = "int"
+)
+
+// IsString reports whether CreateQueueRequestCommonServiceItemIconID is string.
+func (s CreateQueueRequestCommonServiceItemIconID) IsString() bool {
+	return s.Type == StringCreateQueueRequestCommonServiceItemIconID
+}
+
+// IsInt reports whether CreateQueueRequestCommonServiceItemIconID is int.
+func (s CreateQueueRequestCommonServiceItemIconID) IsInt() bool {
+	return s.Type == IntCreateQueueRequestCommonServiceItemIconID
+}
+
+// SetString sets CreateQueueRequestCommonServiceItemIconID to string.
+func (s *CreateQueueRequestCommonServiceItemIconID) SetString(v string) {
+	s.Type = StringCreateQueueRequestCommonServiceItemIconID
+	s.String = v
+}
+
+// GetString returns string and true boolean if CreateQueueRequestCommonServiceItemIconID is string.
+func (s CreateQueueRequestCommonServiceItemIconID) GetString() (v string, ok bool) {
+	if !s.IsString() {
+		return v, false
+	}
+	return s.String, true
+}
+
+// NewStringCreateQueueRequestCommonServiceItemIconID returns new CreateQueueRequestCommonServiceItemIconID from string.
+func NewStringCreateQueueRequestCommonServiceItemIconID(v string) CreateQueueRequestCommonServiceItemIconID {
+	var s CreateQueueRequestCommonServiceItemIconID
+	s.SetString(v)
+	return s
+}
+
+// SetInt sets CreateQueueRequestCommonServiceItemIconID to int.
+func (s *CreateQueueRequestCommonServiceItemIconID) SetInt(v int) {
+	s.Type = IntCreateQueueRequestCommonServiceItemIconID
+	s.Int = v
+}
+
+// GetInt returns int and true boolean if CreateQueueRequestCommonServiceItemIconID is int.
+func (s CreateQueueRequestCommonServiceItemIconID) GetInt() (v int, ok bool) {
+	if !s.IsInt() {
+		return v, false
+	}
+	return s.Int, true
+}
+
+// NewIntCreateQueueRequestCommonServiceItemIconID returns new CreateQueueRequestCommonServiceItemIconID from int.
+func NewIntCreateQueueRequestCommonServiceItemIconID(v int) CreateQueueRequestCommonServiceItemIconID {
+	var s CreateQueueRequestCommonServiceItemIconID
+	s.SetInt(v)
+	return s
+}
+
 type CreateQueueRequestCommonServiceItemProvider struct {
-	Class OptCreateQueueRequestCommonServiceItemProviderClass `json:"Class"`
+	Class CreateQueueRequestCommonServiceItemProviderClass `json:"Class"`
 }
 
 // GetClass returns the value of Class.
-func (s *CreateQueueRequestCommonServiceItemProvider) GetClass() OptCreateQueueRequestCommonServiceItemProviderClass {
+func (s *CreateQueueRequestCommonServiceItemProvider) GetClass() CreateQueueRequestCommonServiceItemProviderClass {
 	return s.Class
 }
 
 // SetClass sets the value of Class.
-func (s *CreateQueueRequestCommonServiceItemProvider) SetClass(val OptCreateQueueRequestCommonServiceItemProviderClass) {
+func (s *CreateQueueRequestCommonServiceItemProvider) SetClass(val CreateQueueRequestCommonServiceItemProviderClass) {
 	s.Class = val
 }
 
@@ -970,195 +1282,6 @@ type GetQueuesUnauthorized Error
 
 func (*GetQueuesUnauthorized) getQueuesRes() {}
 
-// Ref: #/components/schemas/Icon
-// Icon represents sum type.
-type Icon struct {
-	Type  IconType // switch on this field
-	Null  struct{}
-	Icon1 Icon1
-}
-
-// IconType is oneOf type of Icon.
-type IconType string
-
-// Possible values for IconType.
-const (
-	NullIcon  IconType = "struct{}"
-	Icon1Icon IconType = "Icon1"
-)
-
-// IsNull reports whether Icon is struct{}.
-func (s Icon) IsNull() bool { return s.Type == NullIcon }
-
-// IsIcon1 reports whether Icon is Icon1.
-func (s Icon) IsIcon1() bool { return s.Type == Icon1Icon }
-
-// SetNull sets Icon to struct{}.
-func (s *Icon) SetNull(v struct{}) {
-	s.Type = NullIcon
-	s.Null = v
-}
-
-// GetNull returns struct{} and true boolean if Icon is struct{}.
-func (s Icon) GetNull() (v struct{}, ok bool) {
-	if !s.IsNull() {
-		return v, false
-	}
-	return s.Null, true
-}
-
-// NewNullIcon returns new Icon from struct{}.
-func NewNullIcon(v struct{}) Icon {
-	var s Icon
-	s.SetNull(v)
-	return s
-}
-
-// SetIcon1 sets Icon to Icon1.
-func (s *Icon) SetIcon1(v Icon1) {
-	s.Type = Icon1Icon
-	s.Icon1 = v
-}
-
-// GetIcon1 returns Icon1 and true boolean if Icon is Icon1.
-func (s Icon) GetIcon1() (v Icon1, ok bool) {
-	if !s.IsIcon1() {
-		return v, false
-	}
-	return s.Icon1, true
-}
-
-// NewIcon1Icon returns new Icon from Icon1.
-func NewIcon1Icon(v Icon1) Icon {
-	var s Icon
-	s.SetIcon1(v)
-	return s
-}
-
-type Icon1 struct {
-	// 0を指定することでIconなしに設定することが出来ます.
-	ID    OptIcon1ID `json:"ID"`
-	URL   OptString  `json:"URL"`
-	Name  OptString  `json:"Name"`
-	Scope OptString  `json:"Scope"`
-	Tags  []string   `json:"Tags"`
-}
-
-// GetID returns the value of ID.
-func (s *Icon1) GetID() OptIcon1ID {
-	return s.ID
-}
-
-// GetURL returns the value of URL.
-func (s *Icon1) GetURL() OptString {
-	return s.URL
-}
-
-// GetName returns the value of Name.
-func (s *Icon1) GetName() OptString {
-	return s.Name
-}
-
-// GetScope returns the value of Scope.
-func (s *Icon1) GetScope() OptString {
-	return s.Scope
-}
-
-// GetTags returns the value of Tags.
-func (s *Icon1) GetTags() []string {
-	return s.Tags
-}
-
-// SetID sets the value of ID.
-func (s *Icon1) SetID(val OptIcon1ID) {
-	s.ID = val
-}
-
-// SetURL sets the value of URL.
-func (s *Icon1) SetURL(val OptString) {
-	s.URL = val
-}
-
-// SetName sets the value of Name.
-func (s *Icon1) SetName(val OptString) {
-	s.Name = val
-}
-
-// SetScope sets the value of Scope.
-func (s *Icon1) SetScope(val OptString) {
-	s.Scope = val
-}
-
-// SetTags sets the value of Tags.
-func (s *Icon1) SetTags(val []string) {
-	s.Tags = val
-}
-
-// 0を指定することでIconなしに設定することが出来ます.
-// Icon1ID represents sum type.
-type Icon1ID struct {
-	Type   Icon1IDType // switch on this field
-	String string
-	Int    int
-}
-
-// Icon1IDType is oneOf type of Icon1ID.
-type Icon1IDType string
-
-// Possible values for Icon1IDType.
-const (
-	StringIcon1ID Icon1IDType = "string"
-	IntIcon1ID    Icon1IDType = "int"
-)
-
-// IsString reports whether Icon1ID is string.
-func (s Icon1ID) IsString() bool { return s.Type == StringIcon1ID }
-
-// IsInt reports whether Icon1ID is int.
-func (s Icon1ID) IsInt() bool { return s.Type == IntIcon1ID }
-
-// SetString sets Icon1ID to string.
-func (s *Icon1ID) SetString(v string) {
-	s.Type = StringIcon1ID
-	s.String = v
-}
-
-// GetString returns string and true boolean if Icon1ID is string.
-func (s Icon1ID) GetString() (v string, ok bool) {
-	if !s.IsString() {
-		return v, false
-	}
-	return s.String, true
-}
-
-// NewStringIcon1ID returns new Icon1ID from string.
-func NewStringIcon1ID(v string) Icon1ID {
-	var s Icon1ID
-	s.SetString(v)
-	return s
-}
-
-// SetInt sets Icon1ID to int.
-func (s *Icon1ID) SetInt(v int) {
-	s.Type = IntIcon1ID
-	s.Int = v
-}
-
-// GetInt returns int and true boolean if Icon1ID is int.
-func (s Icon1ID) GetInt() (v int, ok bool) {
-	if !s.IsInt() {
-		return v, false
-	}
-	return s.Int, true
-}
-
-// NewIntIcon1ID returns new Icon1ID from int.
-func NewIntIcon1ID(v int) Icon1ID {
-	var s Icon1ID
-	s.SetInt(v)
-	return s
-}
-
 // NewOptBool returns new OptBool with value set to v.
 func NewOptBool(v bool) OptBool {
 	return OptBool{
@@ -1251,38 +1374,38 @@ func (o OptClearQueueOKSimpleMQ) Or(d ClearQueueOKSimpleMQ) ClearQueueOKSimpleMQ
 	return d
 }
 
-// NewOptCommonServiceItemDescription returns new OptCommonServiceItemDescription with value set to v.
-func NewOptCommonServiceItemDescription(v CommonServiceItemDescription) OptCommonServiceItemDescription {
-	return OptCommonServiceItemDescription{
+// NewOptCommonServiceItemIconID returns new OptCommonServiceItemIconID with value set to v.
+func NewOptCommonServiceItemIconID(v CommonServiceItemIconID) OptCommonServiceItemIconID {
+	return OptCommonServiceItemIconID{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptCommonServiceItemDescription is optional CommonServiceItemDescription.
-type OptCommonServiceItemDescription struct {
-	Value CommonServiceItemDescription
+// OptCommonServiceItemIconID is optional CommonServiceItemIconID.
+type OptCommonServiceItemIconID struct {
+	Value CommonServiceItemIconID
 	Set   bool
 }
 
-// IsSet returns true if OptCommonServiceItemDescription was set.
-func (o OptCommonServiceItemDescription) IsSet() bool { return o.Set }
+// IsSet returns true if OptCommonServiceItemIconID was set.
+func (o OptCommonServiceItemIconID) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptCommonServiceItemDescription) Reset() {
-	var v CommonServiceItemDescription
+func (o *OptCommonServiceItemIconID) Reset() {
+	var v CommonServiceItemIconID
 	o.Value = v
 	o.Set = false
 }
 
 // SetTo sets value to v.
-func (o *OptCommonServiceItemDescription) SetTo(v CommonServiceItemDescription) {
+func (o *OptCommonServiceItemIconID) SetTo(v CommonServiceItemIconID) {
 	o.Set = true
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptCommonServiceItemDescription) Get() (v CommonServiceItemDescription, ok bool) {
+func (o OptCommonServiceItemIconID) Get() (v CommonServiceItemIconID, ok bool) {
 	if !o.Set {
 		return v, false
 	}
@@ -1290,45 +1413,45 @@ func (o OptCommonServiceItemDescription) Get() (v CommonServiceItemDescription, 
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptCommonServiceItemDescription) Or(d CommonServiceItemDescription) CommonServiceItemDescription {
+func (o OptCommonServiceItemIconID) Or(d CommonServiceItemIconID) CommonServiceItemIconID {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptCreateQueueRequestCommonServiceItemProviderClass returns new OptCreateQueueRequestCommonServiceItemProviderClass with value set to v.
-func NewOptCreateQueueRequestCommonServiceItemProviderClass(v CreateQueueRequestCommonServiceItemProviderClass) OptCreateQueueRequestCommonServiceItemProviderClass {
-	return OptCreateQueueRequestCommonServiceItemProviderClass{
+// NewOptConfigQueueRequestCommonServiceItemIconID returns new OptConfigQueueRequestCommonServiceItemIconID with value set to v.
+func NewOptConfigQueueRequestCommonServiceItemIconID(v ConfigQueueRequestCommonServiceItemIconID) OptConfigQueueRequestCommonServiceItemIconID {
+	return OptConfigQueueRequestCommonServiceItemIconID{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptCreateQueueRequestCommonServiceItemProviderClass is optional CreateQueueRequestCommonServiceItemProviderClass.
-type OptCreateQueueRequestCommonServiceItemProviderClass struct {
-	Value CreateQueueRequestCommonServiceItemProviderClass
+// OptConfigQueueRequestCommonServiceItemIconID is optional ConfigQueueRequestCommonServiceItemIconID.
+type OptConfigQueueRequestCommonServiceItemIconID struct {
+	Value ConfigQueueRequestCommonServiceItemIconID
 	Set   bool
 }
 
-// IsSet returns true if OptCreateQueueRequestCommonServiceItemProviderClass was set.
-func (o OptCreateQueueRequestCommonServiceItemProviderClass) IsSet() bool { return o.Set }
+// IsSet returns true if OptConfigQueueRequestCommonServiceItemIconID was set.
+func (o OptConfigQueueRequestCommonServiceItemIconID) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptCreateQueueRequestCommonServiceItemProviderClass) Reset() {
-	var v CreateQueueRequestCommonServiceItemProviderClass
+func (o *OptConfigQueueRequestCommonServiceItemIconID) Reset() {
+	var v ConfigQueueRequestCommonServiceItemIconID
 	o.Value = v
 	o.Set = false
 }
 
 // SetTo sets value to v.
-func (o *OptCreateQueueRequestCommonServiceItemProviderClass) SetTo(v CreateQueueRequestCommonServiceItemProviderClass) {
+func (o *OptConfigQueueRequestCommonServiceItemIconID) SetTo(v ConfigQueueRequestCommonServiceItemIconID) {
 	o.Set = true
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptCreateQueueRequestCommonServiceItemProviderClass) Get() (v CreateQueueRequestCommonServiceItemProviderClass, ok bool) {
+func (o OptConfigQueueRequestCommonServiceItemIconID) Get() (v ConfigQueueRequestCommonServiceItemIconID, ok bool) {
 	if !o.Set {
 		return v, false
 	}
@@ -1336,45 +1459,45 @@ func (o OptCreateQueueRequestCommonServiceItemProviderClass) Get() (v CreateQueu
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptCreateQueueRequestCommonServiceItemProviderClass) Or(d CreateQueueRequestCommonServiceItemProviderClass) CreateQueueRequestCommonServiceItemProviderClass {
+func (o OptConfigQueueRequestCommonServiceItemIconID) Or(d ConfigQueueRequestCommonServiceItemIconID) ConfigQueueRequestCommonServiceItemIconID {
 	if v, ok := o.Get(); ok {
 		return v
 	}
 	return d
 }
 
-// NewOptIcon returns new OptIcon with value set to v.
-func NewOptIcon(v Icon) OptIcon {
-	return OptIcon{
+// NewOptCreateQueueRequestCommonServiceItemIconID returns new OptCreateQueueRequestCommonServiceItemIconID with value set to v.
+func NewOptCreateQueueRequestCommonServiceItemIconID(v CreateQueueRequestCommonServiceItemIconID) OptCreateQueueRequestCommonServiceItemIconID {
+	return OptCreateQueueRequestCommonServiceItemIconID{
 		Value: v,
 		Set:   true,
 	}
 }
 
-// OptIcon is optional Icon.
-type OptIcon struct {
-	Value Icon
+// OptCreateQueueRequestCommonServiceItemIconID is optional CreateQueueRequestCommonServiceItemIconID.
+type OptCreateQueueRequestCommonServiceItemIconID struct {
+	Value CreateQueueRequestCommonServiceItemIconID
 	Set   bool
 }
 
-// IsSet returns true if OptIcon was set.
-func (o OptIcon) IsSet() bool { return o.Set }
+// IsSet returns true if OptCreateQueueRequestCommonServiceItemIconID was set.
+func (o OptCreateQueueRequestCommonServiceItemIconID) IsSet() bool { return o.Set }
 
 // Reset unsets value.
-func (o *OptIcon) Reset() {
-	var v Icon
+func (o *OptCreateQueueRequestCommonServiceItemIconID) Reset() {
+	var v CreateQueueRequestCommonServiceItemIconID
 	o.Value = v
 	o.Set = false
 }
 
 // SetTo sets value to v.
-func (o *OptIcon) SetTo(v Icon) {
+func (o *OptCreateQueueRequestCommonServiceItemIconID) SetTo(v CreateQueueRequestCommonServiceItemIconID) {
 	o.Set = true
 	o.Value = v
 }
 
 // Get returns value and boolean that denotes whether value was set.
-func (o OptIcon) Get() (v Icon, ok bool) {
+func (o OptCreateQueueRequestCommonServiceItemIconID) Get() (v CreateQueueRequestCommonServiceItemIconID, ok bool) {
 	if !o.Set {
 		return v, false
 	}
@@ -1382,53 +1505,7 @@ func (o OptIcon) Get() (v Icon, ok bool) {
 }
 
 // Or returns value if set, or given parameter if does not.
-func (o OptIcon) Or(d Icon) Icon {
-	if v, ok := o.Get(); ok {
-		return v
-	}
-	return d
-}
-
-// NewOptIcon1ID returns new OptIcon1ID with value set to v.
-func NewOptIcon1ID(v Icon1ID) OptIcon1ID {
-	return OptIcon1ID{
-		Value: v,
-		Set:   true,
-	}
-}
-
-// OptIcon1ID is optional Icon1ID.
-type OptIcon1ID struct {
-	Value Icon1ID
-	Set   bool
-}
-
-// IsSet returns true if OptIcon1ID was set.
-func (o OptIcon1ID) IsSet() bool { return o.Set }
-
-// Reset unsets value.
-func (o *OptIcon1ID) Reset() {
-	var v Icon1ID
-	o.Value = v
-	o.Set = false
-}
-
-// SetTo sets value to v.
-func (o *OptIcon1ID) SetTo(v Icon1ID) {
-	o.Set = true
-	o.Value = v
-}
-
-// Get returns value and boolean that denotes whether value was set.
-func (o OptIcon1ID) Get() (v Icon1ID, ok bool) {
-	if !o.Set {
-		return v, false
-	}
-	return o.Value, true
-}
-
-// Or returns value if set, or given parameter if does not.
-func (o OptIcon1ID) Or(d Icon1ID) Icon1ID {
+func (o OptCreateQueueRequestCommonServiceItemIconID) Or(d CreateQueueRequestCommonServiceItemIconID) CreateQueueRequestCommonServiceItemIconID {
 	if v, ok := o.Get(); ok {
 		return v
 	}
@@ -1475,6 +1552,258 @@ func (o OptInt) Get() (v int, ok bool) {
 
 // Or returns value if set, or given parameter if does not.
 func (o OptInt) Or(d int) int {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilCommonServiceItemIcon returns new OptNilCommonServiceItemIcon with value set to v.
+func NewOptNilCommonServiceItemIcon(v CommonServiceItemIcon) OptNilCommonServiceItemIcon {
+	return OptNilCommonServiceItemIcon{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilCommonServiceItemIcon is optional nullable CommonServiceItemIcon.
+type OptNilCommonServiceItemIcon struct {
+	Value CommonServiceItemIcon
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilCommonServiceItemIcon was set.
+func (o OptNilCommonServiceItemIcon) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilCommonServiceItemIcon) Reset() {
+	var v CommonServiceItemIcon
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilCommonServiceItemIcon) SetTo(v CommonServiceItemIcon) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilCommonServiceItemIcon) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilCommonServiceItemIcon) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v CommonServiceItemIcon
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilCommonServiceItemIcon) Get() (v CommonServiceItemIcon, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilCommonServiceItemIcon) Or(d CommonServiceItemIcon) CommonServiceItemIcon {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilConfigQueueRequestCommonServiceItemIcon returns new OptNilConfigQueueRequestCommonServiceItemIcon with value set to v.
+func NewOptNilConfigQueueRequestCommonServiceItemIcon(v ConfigQueueRequestCommonServiceItemIcon) OptNilConfigQueueRequestCommonServiceItemIcon {
+	return OptNilConfigQueueRequestCommonServiceItemIcon{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilConfigQueueRequestCommonServiceItemIcon is optional nullable ConfigQueueRequestCommonServiceItemIcon.
+type OptNilConfigQueueRequestCommonServiceItemIcon struct {
+	Value ConfigQueueRequestCommonServiceItemIcon
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilConfigQueueRequestCommonServiceItemIcon was set.
+func (o OptNilConfigQueueRequestCommonServiceItemIcon) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilConfigQueueRequestCommonServiceItemIcon) Reset() {
+	var v ConfigQueueRequestCommonServiceItemIcon
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilConfigQueueRequestCommonServiceItemIcon) SetTo(v ConfigQueueRequestCommonServiceItemIcon) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilConfigQueueRequestCommonServiceItemIcon) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilConfigQueueRequestCommonServiceItemIcon) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v ConfigQueueRequestCommonServiceItemIcon
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilConfigQueueRequestCommonServiceItemIcon) Get() (v ConfigQueueRequestCommonServiceItemIcon, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilConfigQueueRequestCommonServiceItemIcon) Or(d ConfigQueueRequestCommonServiceItemIcon) ConfigQueueRequestCommonServiceItemIcon {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilCreateQueueRequestCommonServiceItemIcon returns new OptNilCreateQueueRequestCommonServiceItemIcon with value set to v.
+func NewOptNilCreateQueueRequestCommonServiceItemIcon(v CreateQueueRequestCommonServiceItemIcon) OptNilCreateQueueRequestCommonServiceItemIcon {
+	return OptNilCreateQueueRequestCommonServiceItemIcon{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilCreateQueueRequestCommonServiceItemIcon is optional nullable CreateQueueRequestCommonServiceItemIcon.
+type OptNilCreateQueueRequestCommonServiceItemIcon struct {
+	Value CreateQueueRequestCommonServiceItemIcon
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilCreateQueueRequestCommonServiceItemIcon was set.
+func (o OptNilCreateQueueRequestCommonServiceItemIcon) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilCreateQueueRequestCommonServiceItemIcon) Reset() {
+	var v CreateQueueRequestCommonServiceItemIcon
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilCreateQueueRequestCommonServiceItemIcon) SetTo(v CreateQueueRequestCommonServiceItemIcon) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilCreateQueueRequestCommonServiceItemIcon) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilCreateQueueRequestCommonServiceItemIcon) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v CreateQueueRequestCommonServiceItemIcon
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilCreateQueueRequestCommonServiceItemIcon) Get() (v CreateQueueRequestCommonServiceItemIcon, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilCreateQueueRequestCommonServiceItemIcon) Or(d CreateQueueRequestCommonServiceItemIcon) CreateQueueRequestCommonServiceItemIcon {
+	if v, ok := o.Get(); ok {
+		return v
+	}
+	return d
+}
+
+// NewOptNilString returns new OptNilString with value set to v.
+func NewOptNilString(v string) OptNilString {
+	return OptNilString{
+		Value: v,
+		Set:   true,
+	}
+}
+
+// OptNilString is optional nullable string.
+type OptNilString struct {
+	Value string
+	Set   bool
+	Null  bool
+}
+
+// IsSet returns true if OptNilString was set.
+func (o OptNilString) IsSet() bool { return o.Set }
+
+// Reset unsets value.
+func (o *OptNilString) Reset() {
+	var v string
+	o.Value = v
+	o.Set = false
+	o.Null = false
+}
+
+// SetTo sets value to v.
+func (o *OptNilString) SetTo(v string) {
+	o.Set = true
+	o.Null = false
+	o.Value = v
+}
+
+// IsNull returns true if value is Null.
+func (o OptNilString) IsNull() bool { return o.Null }
+
+// SetToNull sets value to null.
+func (o *OptNilString) SetToNull() {
+	o.Set = true
+	o.Null = true
+	var v string
+	o.Value = v
+}
+
+// Get returns value and boolean that denotes whether value was set.
+func (o OptNilString) Get() (v string, ok bool) {
+	if o.Null {
+		return v, false
+	}
+	if !o.Set {
+		return v, false
+	}
+	return o.Value, true
+}
+
+// Or returns value if set, or given parameter if does not.
+func (o OptNilString) Or(d string) string {
 	if v, ok := o.Get(); ok {
 		return v
 	}

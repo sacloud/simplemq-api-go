@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
-
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/validate"
 )
@@ -192,7 +191,7 @@ func decodeClearQueueResponse(resp *http.Response) (res ClearQueueRes, _ error) 
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeConfigQueueResponse(resp *http.Response) (res ConfigQueueRes, _ error) {
@@ -382,7 +381,7 @@ func decodeConfigQueueResponse(resp *http.Response) (res ConfigQueueRes, _ error
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeCreateQueueResponse(resp *http.Response) (res CreateQueueRes, _ error) {
@@ -572,7 +571,7 @@ func decodeCreateQueueResponse(resp *http.Response) (res CreateQueueRes, _ error
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeDeleteQueueResponse(resp *http.Response) (res DeleteQueueRes, _ error) {
@@ -762,7 +761,7 @@ func decodeDeleteQueueResponse(resp *http.Response) (res DeleteQueueRes, _ error
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetMessageCountResponse(resp *http.Response) (res GetMessageCountRes, _ error) {
@@ -943,7 +942,7 @@ func decodeGetMessageCountResponse(resp *http.Response) (res GetMessageCountRes,
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetQueueResponse(resp *http.Response) (res GetQueueRes, _ error) {
@@ -1133,7 +1132,7 @@ func decodeGetQueueResponse(resp *http.Response) (res GetQueueRes, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeGetQueuesResponse(resp *http.Response) (res GetQueuesRes, _ error) {
@@ -1288,7 +1287,7 @@ func decodeGetQueuesResponse(resp *http.Response) (res GetQueuesRes, _ error) {
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeRotateAPIKeyResponse(resp *http.Response) (res RotateAPIKeyRes, _ error) {
@@ -1469,5 +1468,5 @@ func decodeRotateAPIKeyResponse(resp *http.Response) (res RotateAPIKeyRes, _ err
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }

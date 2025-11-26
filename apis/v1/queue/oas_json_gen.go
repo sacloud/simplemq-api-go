@@ -8,7 +8,6 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
-
 	"github.com/ogen-go/ogen/json"
 	"github.com/ogen-go/ogen/validate"
 )
@@ -614,55 +613,6 @@ func (s *CommonServiceItem) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes CommonServiceItemDescription as json.
-func (s CommonServiceItemDescription) Encode(e *jx.Encoder) {
-	switch s.Type {
-	case StringCommonServiceItemDescription:
-		e.Str(s.String)
-	case NullCommonServiceItemDescription:
-		_ = s.Null
-		e.Null()
-	}
-}
-
-// Decode decodes CommonServiceItemDescription from json.
-func (s *CommonServiceItemDescription) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode CommonServiceItemDescription to nil")
-	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Null:
-		if err := d.Null(); err != nil {
-			return err
-		}
-		s.Type = NullCommonServiceItemDescription
-	case jx.String:
-		v, err := d.Str()
-		s.String = string(v)
-		if err != nil {
-			return err
-		}
-		s.Type = StringCommonServiceItemDescription
-	default:
-		return errors.Errorf("unexpected json type %q", t)
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s CommonServiceItemDescription) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *CommonServiceItemDescription) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes CommonServiceItemID as json.
 func (s CommonServiceItemID) Encode(e *jx.Encoder) {
 	switch s.Type {
@@ -709,6 +659,200 @@ func (s CommonServiceItemID) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *CommonServiceItemID) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *CommonServiceItemIcon) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *CommonServiceItemIcon) encodeFields(e *jx.Encoder) {
+	{
+		if s.ID.Set {
+			e.FieldStart("ID")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.URL.Set {
+			e.FieldStart("URL")
+			s.URL.Encode(e)
+		}
+	}
+	{
+		if s.Name.Set {
+			e.FieldStart("Name")
+			s.Name.Encode(e)
+		}
+	}
+	{
+		if s.Scope.Set {
+			e.FieldStart("Scope")
+			s.Scope.Encode(e)
+		}
+	}
+	{
+		if s.Tags != nil {
+			e.FieldStart("Tags")
+			e.ArrStart()
+			for _, elem := range s.Tags {
+				e.Str(elem)
+			}
+			e.ArrEnd()
+		}
+	}
+}
+
+var jsonFieldsNameOfCommonServiceItemIcon = [5]string{
+	0: "ID",
+	1: "URL",
+	2: "Name",
+	3: "Scope",
+	4: "Tags",
+}
+
+// Decode decodes CommonServiceItemIcon from json.
+func (s *CommonServiceItemIcon) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CommonServiceItemIcon to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "ID":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"ID\"")
+			}
+		case "URL":
+			if err := func() error {
+				s.URL.Reset()
+				if err := s.URL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"URL\"")
+			}
+		case "Name":
+			if err := func() error {
+				s.Name.Reset()
+				if err := s.Name.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Name\"")
+			}
+		case "Scope":
+			if err := func() error {
+				s.Scope.Reset()
+				if err := s.Scope.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Scope\"")
+			}
+		case "Tags":
+			if err := func() error {
+				s.Tags = make([]string, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem string
+					v, err := d.Str()
+					elem = string(v)
+					if err != nil {
+						return err
+					}
+					s.Tags = append(s.Tags, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Tags\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CommonServiceItemIcon")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *CommonServiceItemIcon) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CommonServiceItemIcon) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes CommonServiceItemIconID as json.
+func (s CommonServiceItemIconID) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case StringCommonServiceItemIconID:
+		e.Str(s.String)
+	case IntCommonServiceItemIconID:
+		e.Int(s.Int)
+	}
+}
+
+// Decode decodes CommonServiceItemIconID from json.
+func (s *CommonServiceItemIconID) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CommonServiceItemIconID to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Number:
+		v, err := d.Int()
+		s.Int = int(v)
+		if err != nil {
+			return err
+		}
+		s.Type = IntCommonServiceItemIconID
+	case jx.String:
+		v, err := d.Str()
+		s.String = string(v)
+		if err != nil {
+			return err
+		}
+		s.Type = StringCommonServiceItemIconID
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s CommonServiceItemIconID) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CommonServiceItemIconID) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -1203,6 +1347,200 @@ func (s *ConfigQueueRequestCommonServiceItem) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *ConfigQueueRequestCommonServiceItem) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
+func (s *ConfigQueueRequestCommonServiceItemIcon) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *ConfigQueueRequestCommonServiceItemIcon) encodeFields(e *jx.Encoder) {
+	{
+		if s.ID.Set {
+			e.FieldStart("ID")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.URL.Set {
+			e.FieldStart("URL")
+			s.URL.Encode(e)
+		}
+	}
+	{
+		if s.Name.Set {
+			e.FieldStart("Name")
+			s.Name.Encode(e)
+		}
+	}
+	{
+		if s.Scope.Set {
+			e.FieldStart("Scope")
+			s.Scope.Encode(e)
+		}
+	}
+	{
+		if s.Tags != nil {
+			e.FieldStart("Tags")
+			e.ArrStart()
+			for _, elem := range s.Tags {
+				e.Str(elem)
+			}
+			e.ArrEnd()
+		}
+	}
+}
+
+var jsonFieldsNameOfConfigQueueRequestCommonServiceItemIcon = [5]string{
+	0: "ID",
+	1: "URL",
+	2: "Name",
+	3: "Scope",
+	4: "Tags",
+}
+
+// Decode decodes ConfigQueueRequestCommonServiceItemIcon from json.
+func (s *ConfigQueueRequestCommonServiceItemIcon) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConfigQueueRequestCommonServiceItemIcon to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "ID":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"ID\"")
+			}
+		case "URL":
+			if err := func() error {
+				s.URL.Reset()
+				if err := s.URL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"URL\"")
+			}
+		case "Name":
+			if err := func() error {
+				s.Name.Reset()
+				if err := s.Name.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Name\"")
+			}
+		case "Scope":
+			if err := func() error {
+				s.Scope.Reset()
+				if err := s.Scope.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Scope\"")
+			}
+		case "Tags":
+			if err := func() error {
+				s.Tags = make([]string, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem string
+					v, err := d.Str()
+					elem = string(v)
+					if err != nil {
+						return err
+					}
+					s.Tags = append(s.Tags, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Tags\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode ConfigQueueRequestCommonServiceItemIcon")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *ConfigQueueRequestCommonServiceItemIcon) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConfigQueueRequestCommonServiceItemIcon) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes ConfigQueueRequestCommonServiceItemIconID as json.
+func (s ConfigQueueRequestCommonServiceItemIconID) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case StringConfigQueueRequestCommonServiceItemIconID:
+		e.Str(s.String)
+	case IntConfigQueueRequestCommonServiceItemIconID:
+		e.Int(s.Int)
+	}
+}
+
+// Decode decodes ConfigQueueRequestCommonServiceItemIconID from json.
+func (s *ConfigQueueRequestCommonServiceItemIconID) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode ConfigQueueRequestCommonServiceItemIconID to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Number:
+		v, err := d.Int()
+		s.Int = int(v)
+		if err != nil {
+			return err
+		}
+		s.Type = IntConfigQueueRequestCommonServiceItemIconID
+	case jx.String:
+		v, err := d.Str()
+		s.String = string(v)
+		if err != nil {
+			return err
+		}
+		s.Type = StringConfigQueueRequestCommonServiceItemIconID
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s ConfigQueueRequestCommonServiceItemIconID) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *ConfigQueueRequestCommonServiceItemIconID) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -1755,6 +2093,200 @@ func (s *CreateQueueRequestCommonServiceItem) UnmarshalJSON(data []byte) error {
 }
 
 // Encode implements json.Marshaler.
+func (s *CreateQueueRequestCommonServiceItemIcon) Encode(e *jx.Encoder) {
+	e.ObjStart()
+	s.encodeFields(e)
+	e.ObjEnd()
+}
+
+// encodeFields encodes fields.
+func (s *CreateQueueRequestCommonServiceItemIcon) encodeFields(e *jx.Encoder) {
+	{
+		if s.ID.Set {
+			e.FieldStart("ID")
+			s.ID.Encode(e)
+		}
+	}
+	{
+		if s.URL.Set {
+			e.FieldStart("URL")
+			s.URL.Encode(e)
+		}
+	}
+	{
+		if s.Name.Set {
+			e.FieldStart("Name")
+			s.Name.Encode(e)
+		}
+	}
+	{
+		if s.Scope.Set {
+			e.FieldStart("Scope")
+			s.Scope.Encode(e)
+		}
+	}
+	{
+		if s.Tags != nil {
+			e.FieldStart("Tags")
+			e.ArrStart()
+			for _, elem := range s.Tags {
+				e.Str(elem)
+			}
+			e.ArrEnd()
+		}
+	}
+}
+
+var jsonFieldsNameOfCreateQueueRequestCommonServiceItemIcon = [5]string{
+	0: "ID",
+	1: "URL",
+	2: "Name",
+	3: "Scope",
+	4: "Tags",
+}
+
+// Decode decodes CreateQueueRequestCommonServiceItemIcon from json.
+func (s *CreateQueueRequestCommonServiceItemIcon) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CreateQueueRequestCommonServiceItemIcon to nil")
+	}
+
+	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
+		switch string(k) {
+		case "ID":
+			if err := func() error {
+				s.ID.Reset()
+				if err := s.ID.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"ID\"")
+			}
+		case "URL":
+			if err := func() error {
+				s.URL.Reset()
+				if err := s.URL.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"URL\"")
+			}
+		case "Name":
+			if err := func() error {
+				s.Name.Reset()
+				if err := s.Name.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Name\"")
+			}
+		case "Scope":
+			if err := func() error {
+				s.Scope.Reset()
+				if err := s.Scope.Decode(d); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Scope\"")
+			}
+		case "Tags":
+			if err := func() error {
+				s.Tags = make([]string, 0)
+				if err := d.Arr(func(d *jx.Decoder) error {
+					var elem string
+					v, err := d.Str()
+					elem = string(v)
+					if err != nil {
+						return err
+					}
+					s.Tags = append(s.Tags, elem)
+					return nil
+				}); err != nil {
+					return err
+				}
+				return nil
+			}(); err != nil {
+				return errors.Wrap(err, "decode field \"Tags\"")
+			}
+		default:
+			return d.Skip()
+		}
+		return nil
+	}); err != nil {
+		return errors.Wrap(err, "decode CreateQueueRequestCommonServiceItemIcon")
+	}
+
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s *CreateQueueRequestCommonServiceItemIcon) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CreateQueueRequestCommonServiceItemIcon) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes CreateQueueRequestCommonServiceItemIconID as json.
+func (s CreateQueueRequestCommonServiceItemIconID) Encode(e *jx.Encoder) {
+	switch s.Type {
+	case StringCreateQueueRequestCommonServiceItemIconID:
+		e.Str(s.String)
+	case IntCreateQueueRequestCommonServiceItemIconID:
+		e.Int(s.Int)
+	}
+}
+
+// Decode decodes CreateQueueRequestCommonServiceItemIconID from json.
+func (s *CreateQueueRequestCommonServiceItemIconID) Decode(d *jx.Decoder) error {
+	if s == nil {
+		return errors.New("invalid: unable to decode CreateQueueRequestCommonServiceItemIconID to nil")
+	}
+	// Sum type type_discriminator.
+	switch t := d.Next(); t {
+	case jx.Number:
+		v, err := d.Int()
+		s.Int = int(v)
+		if err != nil {
+			return err
+		}
+		s.Type = IntCreateQueueRequestCommonServiceItemIconID
+	case jx.String:
+		v, err := d.Str()
+		s.String = string(v)
+		if err != nil {
+			return err
+		}
+		s.Type = StringCreateQueueRequestCommonServiceItemIconID
+	default:
+		return errors.Errorf("unexpected json type %q", t)
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s CreateQueueRequestCommonServiceItemIconID) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *CreateQueueRequestCommonServiceItemIconID) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode implements json.Marshaler.
 func (s *CreateQueueRequestCommonServiceItemProvider) Encode(e *jx.Encoder) {
 	e.ObjStart()
 	s.encodeFields(e)
@@ -1764,10 +2296,8 @@ func (s *CreateQueueRequestCommonServiceItemProvider) Encode(e *jx.Encoder) {
 // encodeFields encodes fields.
 func (s *CreateQueueRequestCommonServiceItemProvider) encodeFields(e *jx.Encoder) {
 	{
-		if s.Class.Set {
-			e.FieldStart("Class")
-			s.Class.Encode(e)
-		}
+		e.FieldStart("Class")
+		s.Class.Encode(e)
 	}
 }
 
@@ -1780,12 +2310,13 @@ func (s *CreateQueueRequestCommonServiceItemProvider) Decode(d *jx.Decoder) erro
 	if s == nil {
 		return errors.New("invalid: unable to decode CreateQueueRequestCommonServiceItemProvider to nil")
 	}
+	var requiredBitSet [1]uint8
 
 	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
 		switch string(k) {
 		case "Class":
+			requiredBitSet[0] |= 1 << 0
 			if err := func() error {
-				s.Class.Reset()
 				if err := s.Class.Decode(d); err != nil {
 					return err
 				}
@@ -1799,6 +2330,38 @@ func (s *CreateQueueRequestCommonServiceItemProvider) Decode(d *jx.Decoder) erro
 		return nil
 	}); err != nil {
 		return errors.Wrap(err, "decode CreateQueueRequestCommonServiceItemProvider")
+	}
+	// Validate required fields.
+	var failures []validate.FieldError
+	for i, mask := range [1]uint8{
+		0b00000001,
+	} {
+		if result := (requiredBitSet[i] & mask) ^ mask; result != 0 {
+			// Mask only required fields and check equality to mask using XOR.
+			//
+			// If XOR result is not zero, result is not equal to expected, so some fields are missed.
+			// Bits of fields which would be set are actually bits of missed fields.
+			missed := bits.OnesCount8(result)
+			for bitN := 0; bitN < missed; bitN++ {
+				bitIdx := bits.TrailingZeros8(result)
+				fieldIdx := i*8 + bitIdx
+				var name string
+				if fieldIdx < len(jsonFieldsNameOfCreateQueueRequestCommonServiceItemProvider) {
+					name = jsonFieldsNameOfCreateQueueRequestCommonServiceItemProvider[fieldIdx]
+				} else {
+					name = strconv.Itoa(fieldIdx)
+				}
+				failures = append(failures, validate.FieldError{
+					Name:  name,
+					Error: validate.ErrFieldRequired,
+				})
+				// Reset bit.
+				result &^= 1 << bitIdx
+			}
+		}
+	}
+	if len(failures) > 0 {
+		return &validate.Error{Fields: failures}
 	}
 
 	return nil
@@ -3272,247 +3835,6 @@ func (s *GetQueuesUnauthorized) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes Icon as json.
-func (s Icon) Encode(e *jx.Encoder) {
-	switch s.Type {
-	case NullIcon:
-		_ = s.Null
-		e.Null()
-	case Icon1Icon:
-		s.Icon1.Encode(e)
-	}
-}
-
-// Decode decodes Icon from json.
-func (s *Icon) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode Icon to nil")
-	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Null:
-		if err := d.Null(); err != nil {
-			return err
-		}
-		s.Type = NullIcon
-	case jx.Object:
-		if err := s.Icon1.Decode(d); err != nil {
-			return err
-		}
-		s.Type = Icon1Icon
-	default:
-		return errors.Errorf("unexpected json type %q", t)
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s Icon) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *Icon) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode implements json.Marshaler.
-func (s *Icon1) Encode(e *jx.Encoder) {
-	e.ObjStart()
-	s.encodeFields(e)
-	e.ObjEnd()
-}
-
-// encodeFields encodes fields.
-func (s *Icon1) encodeFields(e *jx.Encoder) {
-	{
-		if s.ID.Set {
-			e.FieldStart("ID")
-			s.ID.Encode(e)
-		}
-	}
-	{
-		if s.URL.Set {
-			e.FieldStart("URL")
-			s.URL.Encode(e)
-		}
-	}
-	{
-		if s.Name.Set {
-			e.FieldStart("Name")
-			s.Name.Encode(e)
-		}
-	}
-	{
-		if s.Scope.Set {
-			e.FieldStart("Scope")
-			s.Scope.Encode(e)
-		}
-	}
-	{
-		if s.Tags != nil {
-			e.FieldStart("Tags")
-			e.ArrStart()
-			for _, elem := range s.Tags {
-				e.Str(elem)
-			}
-			e.ArrEnd()
-		}
-	}
-}
-
-var jsonFieldsNameOfIcon1 = [5]string{
-	0: "ID",
-	1: "URL",
-	2: "Name",
-	3: "Scope",
-	4: "Tags",
-}
-
-// Decode decodes Icon1 from json.
-func (s *Icon1) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode Icon1 to nil")
-	}
-
-	if err := d.ObjBytes(func(d *jx.Decoder, k []byte) error {
-		switch string(k) {
-		case "ID":
-			if err := func() error {
-				s.ID.Reset()
-				if err := s.ID.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"ID\"")
-			}
-		case "URL":
-			if err := func() error {
-				s.URL.Reset()
-				if err := s.URL.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"URL\"")
-			}
-		case "Name":
-			if err := func() error {
-				s.Name.Reset()
-				if err := s.Name.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"Name\"")
-			}
-		case "Scope":
-			if err := func() error {
-				s.Scope.Reset()
-				if err := s.Scope.Decode(d); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"Scope\"")
-			}
-		case "Tags":
-			if err := func() error {
-				s.Tags = make([]string, 0)
-				if err := d.Arr(func(d *jx.Decoder) error {
-					var elem string
-					v, err := d.Str()
-					elem = string(v)
-					if err != nil {
-						return err
-					}
-					s.Tags = append(s.Tags, elem)
-					return nil
-				}); err != nil {
-					return err
-				}
-				return nil
-			}(); err != nil {
-				return errors.Wrap(err, "decode field \"Tags\"")
-			}
-		default:
-			return d.Skip()
-		}
-		return nil
-	}); err != nil {
-		return errors.Wrap(err, "decode Icon1")
-	}
-
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s *Icon1) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *Icon1) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes Icon1ID as json.
-func (s Icon1ID) Encode(e *jx.Encoder) {
-	switch s.Type {
-	case StringIcon1ID:
-		e.Str(s.String)
-	case IntIcon1ID:
-		e.Int(s.Int)
-	}
-}
-
-// Decode decodes Icon1ID from json.
-func (s *Icon1ID) Decode(d *jx.Decoder) error {
-	if s == nil {
-		return errors.New("invalid: unable to decode Icon1ID to nil")
-	}
-	// Sum type type_discriminator.
-	switch t := d.Next(); t {
-	case jx.Number:
-		v, err := d.Int()
-		s.Int = int(v)
-		if err != nil {
-			return err
-		}
-		s.Type = IntIcon1ID
-	case jx.String:
-		v, err := d.Str()
-		s.String = string(v)
-		if err != nil {
-			return err
-		}
-		s.Type = StringIcon1ID
-	default:
-		return errors.Errorf("unexpected json type %q", t)
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s Icon1ID) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *Icon1ID) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
 // Encode encodes bool as json.
 func (o OptBool) Encode(e *jx.Encoder) {
 	if !o.Set {
@@ -3581,18 +3903,18 @@ func (s *OptClearQueueOKSimpleMQ) UnmarshalJSON(data []byte) error {
 	return s.Decode(d)
 }
 
-// Encode encodes CommonServiceItemDescription as json.
-func (o OptCommonServiceItemDescription) Encode(e *jx.Encoder) {
+// Encode encodes CommonServiceItemIconID as json.
+func (o OptCommonServiceItemIconID) Encode(e *jx.Encoder) {
 	if !o.Set {
 		return
 	}
 	o.Value.Encode(e)
 }
 
-// Decode decodes CommonServiceItemDescription from json.
-func (o *OptCommonServiceItemDescription) Decode(d *jx.Decoder) error {
+// Decode decodes CommonServiceItemIconID from json.
+func (o *OptCommonServiceItemIconID) Decode(d *jx.Decoder) error {
 	if o == nil {
-		return errors.New("invalid: unable to decode OptCommonServiceItemDescription to nil")
+		return errors.New("invalid: unable to decode OptCommonServiceItemIconID to nil")
 	}
 	o.Set = true
 	if err := o.Value.Decode(d); err != nil {
@@ -3602,63 +3924,30 @@ func (o *OptCommonServiceItemDescription) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s OptCommonServiceItemDescription) MarshalJSON() ([]byte, error) {
+func (s OptCommonServiceItemIconID) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCommonServiceItemDescription) UnmarshalJSON(data []byte) error {
+func (s *OptCommonServiceItemIconID) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
-// Encode encodes CreateQueueRequestCommonServiceItemProviderClass as json.
-func (o OptCreateQueueRequestCommonServiceItemProviderClass) Encode(e *jx.Encoder) {
-	if !o.Set {
-		return
-	}
-	e.Str(string(o.Value))
-}
-
-// Decode decodes CreateQueueRequestCommonServiceItemProviderClass from json.
-func (o *OptCreateQueueRequestCommonServiceItemProviderClass) Decode(d *jx.Decoder) error {
-	if o == nil {
-		return errors.New("invalid: unable to decode OptCreateQueueRequestCommonServiceItemProviderClass to nil")
-	}
-	o.Set = true
-	if err := o.Value.Decode(d); err != nil {
-		return err
-	}
-	return nil
-}
-
-// MarshalJSON implements stdjson.Marshaler.
-func (s OptCreateQueueRequestCommonServiceItemProviderClass) MarshalJSON() ([]byte, error) {
-	e := jx.Encoder{}
-	s.Encode(&e)
-	return e.Bytes(), nil
-}
-
-// UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptCreateQueueRequestCommonServiceItemProviderClass) UnmarshalJSON(data []byte) error {
-	d := jx.DecodeBytes(data)
-	return s.Decode(d)
-}
-
-// Encode encodes Icon as json.
-func (o OptIcon) Encode(e *jx.Encoder) {
+// Encode encodes ConfigQueueRequestCommonServiceItemIconID as json.
+func (o OptConfigQueueRequestCommonServiceItemIconID) Encode(e *jx.Encoder) {
 	if !o.Set {
 		return
 	}
 	o.Value.Encode(e)
 }
 
-// Decode decodes Icon from json.
-func (o *OptIcon) Decode(d *jx.Decoder) error {
+// Decode decodes ConfigQueueRequestCommonServiceItemIconID from json.
+func (o *OptConfigQueueRequestCommonServiceItemIconID) Decode(d *jx.Decoder) error {
 	if o == nil {
-		return errors.New("invalid: unable to decode OptIcon to nil")
+		return errors.New("invalid: unable to decode OptConfigQueueRequestCommonServiceItemIconID to nil")
 	}
 	o.Set = true
 	if err := o.Value.Decode(d); err != nil {
@@ -3668,30 +3957,30 @@ func (o *OptIcon) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s OptIcon) MarshalJSON() ([]byte, error) {
+func (s OptConfigQueueRequestCommonServiceItemIconID) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptIcon) UnmarshalJSON(data []byte) error {
+func (s *OptConfigQueueRequestCommonServiceItemIconID) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
 
-// Encode encodes Icon1ID as json.
-func (o OptIcon1ID) Encode(e *jx.Encoder) {
+// Encode encodes CreateQueueRequestCommonServiceItemIconID as json.
+func (o OptCreateQueueRequestCommonServiceItemIconID) Encode(e *jx.Encoder) {
 	if !o.Set {
 		return
 	}
 	o.Value.Encode(e)
 }
 
-// Decode decodes Icon1ID from json.
-func (o *OptIcon1ID) Decode(d *jx.Decoder) error {
+// Decode decodes CreateQueueRequestCommonServiceItemIconID from json.
+func (o *OptCreateQueueRequestCommonServiceItemIconID) Decode(d *jx.Decoder) error {
 	if o == nil {
-		return errors.New("invalid: unable to decode OptIcon1ID to nil")
+		return errors.New("invalid: unable to decode OptCreateQueueRequestCommonServiceItemIconID to nil")
 	}
 	o.Set = true
 	if err := o.Value.Decode(d); err != nil {
@@ -3701,14 +3990,14 @@ func (o *OptIcon1ID) Decode(d *jx.Decoder) error {
 }
 
 // MarshalJSON implements stdjson.Marshaler.
-func (s OptIcon1ID) MarshalJSON() ([]byte, error) {
+func (s OptCreateQueueRequestCommonServiceItemIconID) MarshalJSON() ([]byte, error) {
 	e := jx.Encoder{}
 	s.Encode(&e)
 	return e.Bytes(), nil
 }
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
-func (s *OptIcon1ID) UnmarshalJSON(data []byte) error {
+func (s *OptCreateQueueRequestCommonServiceItemIconID) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }
@@ -3744,6 +4033,204 @@ func (s OptInt) MarshalJSON() ([]byte, error) {
 
 // UnmarshalJSON implements stdjson.Unmarshaler.
 func (s *OptInt) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes CommonServiceItemIcon as json.
+func (o OptNilCommonServiceItemIcon) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes CommonServiceItemIcon from json.
+func (o *OptNilCommonServiceItemIcon) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilCommonServiceItemIcon to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v CommonServiceItemIcon
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilCommonServiceItemIcon) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilCommonServiceItemIcon) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes ConfigQueueRequestCommonServiceItemIcon as json.
+func (o OptNilConfigQueueRequestCommonServiceItemIcon) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes ConfigQueueRequestCommonServiceItemIcon from json.
+func (o *OptNilConfigQueueRequestCommonServiceItemIcon) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilConfigQueueRequestCommonServiceItemIcon to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v ConfigQueueRequestCommonServiceItemIcon
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilConfigQueueRequestCommonServiceItemIcon) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilConfigQueueRequestCommonServiceItemIcon) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes CreateQueueRequestCommonServiceItemIcon as json.
+func (o OptNilCreateQueueRequestCommonServiceItemIcon) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	o.Value.Encode(e)
+}
+
+// Decode decodes CreateQueueRequestCommonServiceItemIcon from json.
+func (o *OptNilCreateQueueRequestCommonServiceItemIcon) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilCreateQueueRequestCommonServiceItemIcon to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v CreateQueueRequestCommonServiceItemIcon
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	if err := o.Value.Decode(d); err != nil {
+		return err
+	}
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilCreateQueueRequestCommonServiceItemIcon) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilCreateQueueRequestCommonServiceItemIcon) UnmarshalJSON(data []byte) error {
+	d := jx.DecodeBytes(data)
+	return s.Decode(d)
+}
+
+// Encode encodes string as json.
+func (o OptNilString) Encode(e *jx.Encoder) {
+	if !o.Set {
+		return
+	}
+	if o.Null {
+		e.Null()
+		return
+	}
+	e.Str(string(o.Value))
+}
+
+// Decode decodes string from json.
+func (o *OptNilString) Decode(d *jx.Decoder) error {
+	if o == nil {
+		return errors.New("invalid: unable to decode OptNilString to nil")
+	}
+	if d.Next() == jx.Null {
+		if err := d.Null(); err != nil {
+			return err
+		}
+
+		var v string
+		o.Value = v
+		o.Set = true
+		o.Null = true
+		return nil
+	}
+	o.Set = true
+	o.Null = false
+	v, err := d.Str()
+	if err != nil {
+		return err
+	}
+	o.Value = string(v)
+	return nil
+}
+
+// MarshalJSON implements stdjson.Marshaler.
+func (s OptNilString) MarshalJSON() ([]byte, error) {
+	e := jx.Encoder{}
+	s.Encode(&e)
+	return e.Bytes(), nil
+}
+
+// UnmarshalJSON implements stdjson.Unmarshaler.
+func (s *OptNilString) UnmarshalJSON(data []byte) error {
 	d := jx.DecodeBytes(data)
 	return s.Decode(d)
 }

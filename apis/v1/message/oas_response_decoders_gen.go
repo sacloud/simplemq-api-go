@@ -9,7 +9,6 @@ import (
 
 	"github.com/go-faster/errors"
 	"github.com/go-faster/jx"
-
 	"github.com/ogen-go/ogen/ogenerrors"
 	"github.com/ogen-go/ogen/validate"
 )
@@ -227,7 +226,7 @@ func decodeDeleteMessageResponse(resp *http.Response) (res DeleteMessageRes, _ e
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeExtendMessageTimeoutResponse(resp *http.Response) (res ExtendMessageTimeoutRes, _ error) {
@@ -452,7 +451,7 @@ func decodeExtendMessageTimeoutResponse(resp *http.Response) (res ExtendMessageT
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeReceiveMessageResponse(resp *http.Response) (res ReceiveMessageRes, _ error) {
@@ -642,7 +641,7 @@ func decodeReceiveMessageResponse(resp *http.Response) (res ReceiveMessageRes, _
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
 
 func decodeSendMessageResponse(resp *http.Response) (res SendMessageRes, _ error) {
@@ -832,5 +831,5 @@ func decodeSendMessageResponse(resp *http.Response) (res SendMessageRes, _ error
 			return res, validate.InvalidContentType(ct)
 		}
 	}
-	return res, validate.UnexpectedStatusCode(resp.StatusCode)
+	return res, validate.UnexpectedStatusCodeWithResponse(resp)
 }
