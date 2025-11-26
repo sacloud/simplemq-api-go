@@ -62,7 +62,7 @@ func GetQueueName(q *queue.CommonServiceItem) string {
 }
 
 func (op *queueOp) Create(ctx context.Context, req queue.CreateQueueRequest) (*queue.CommonServiceItem, error) {
-	req.CommonServiceItem.Provider.Class = queue.NewOptCreateQueueRequestCommonServiceItemProviderClass(queue.CreateQueueRequestCommonServiceItemProviderClassSimplemq)
+	req.CommonServiceItem.Provider.Class = queue.CreateQueueRequestCommonServiceItemProviderClassSimplemq
 	res, err := op.client.CreateQueue(ctx, &req)
 	if err != nil {
 		return nil, NewAPIError("Queue.Create", 0, err)
