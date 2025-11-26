@@ -1,5 +1,16 @@
 # Changelog
 
+## [v0.3.0](https://github.com/sacloud/simplemq-api-go/compare/v0.2.0...v0.3.0) - 2025-11-26
+- Update github settings by @a2not in https://github.com/sacloud/simplemq-api-go/pull/26
+- chore(textlint): ignore CHANGELOG.md file by @a2not in https://github.com/sacloud/simplemq-api-go/pull/33
+- ci: bump actions/setup-go from 5.5.0 to 6.0.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/29
+- go: bump github.com/stretchr/testify from 1.10.0 to 1.11.1 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/24
+- go: bump github.com/sacloud/api-client-go from 0.3.2 to 0.3.3 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/23
+- メッセージAPIの429エラーを追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/34
+- go: bump github.com/go-faster/jx from 1.1.0 to 1.2.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/35
+- go: bump github.com/ogen-go/ogen from 1.14.0 to 1.16.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/32
+- chore: update Go to 1.25 and golangci-lint to v2.6.2 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/36
+
 ## [v0.2.0](https://github.com/sacloud/simplemq-api-go/compare/v0.1.3...v0.2.0) - 2025-07-04
 - Migrate from Example to Test by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/14
 - Use simplemq.Error instead of common error by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/15
