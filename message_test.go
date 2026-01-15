@@ -1,3 +1,17 @@
+// Copyright 2022-2025 The sacloud/simplemq-api-go Authors
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//      http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
 package simplemq_test
 
 import (
@@ -6,6 +20,7 @@ import (
 	"time"
 
 	"github.com/sacloud/packages-go/testutil"
+	"github.com/sacloud/saclient-go"
 	"github.com/sacloud/simplemq-api-go"
 	"github.com/sacloud/simplemq-api-go/apis/v1/message"
 	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
@@ -13,12 +28,14 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
+var messageClient saclient.Client
+
 func TestMessageAPI(t *testing.T) {
 	testutil.PreCheckEnvsFunc("SAKURACLOUD_ACCESS_TOKEN", "SAKURACLOUD_ACCESS_TOKEN_SECRET")(t)
 
 	ctx := context.Background()
 
-	qClient, err := simplemq.NewQueueClient()
+	qClient, err := simplemq.NewQueueClient(&queueClient)
 	require.NoError(t, err)
 	queueOp := simplemq.NewQueueOp(qClient)
 
@@ -35,7 +52,7 @@ func TestMessageAPI(t *testing.T) {
 	apiKey, err := queueOp.RotateAPIKey(ctx, simplemq.GetQueueID(resCreate))
 	assert.NoError(t, err)
 
-	client, err := simplemq.NewMessageClient(apiKey)
+	client, err := simplemq.NewMessageClient(apiKey, &messageClient)
 	require.NoError(t, err)
 	messageOp := simplemq.NewMessageOp(client, queueName)
 

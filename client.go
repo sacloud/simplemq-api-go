@@ -17,11 +17,10 @@ package simplemq
 import (
 	"context"
 	"fmt"
-	"net/http"
 	"runtime"
 
 	client "github.com/sacloud/api-client-go"
-	sacloudhttp "github.com/sacloud/go-http"
+	"github.com/sacloud/saclient-go"
 	"github.com/sacloud/simplemq-api-go/apis/v1/message"
 	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
 )
@@ -47,24 +46,27 @@ func (ss DummySecuritySource) ApiKeyAuth(ctx context.Context, operationName queu
 	return queue.ApiKeyAuth{Username: ss.Token}, nil
 }
 
-func NewQueueClient(params ...client.ClientParam) (*queue.Client, error) {
-	return NewQueueClientWithApiUrl(DefaultQueueAPIRootURL, params...)
+func NewQueueClient(client saclient.ClientAPI) (*queue.Client, error) {
+	return NewQueueClientWithApiUrl(DefaultQueueAPIRootURL, client)
 }
 
-func NewQueueClientWithApiUrl(apiUrl string, params ...client.ClientParam) (*queue.Client, error) {
-	c, err := client.NewClient(apiUrl, append([]client.ClientParam{
-		client.WithUserAgent(UserAgent),
-	}, params...)...)
-	if err != nil {
-		return nil, NewError("NewQueueClientWithApiUrl", err)
-	}
+func NewQueueClientWithApiUrl(apiUrl string, client saclient.ClientAPI) (*queue.Client, error) {
+	var ss DummySecuritySource
 
-	v1Client, err := queue.NewClient(c.ServerURL(), DummySecuritySource{Token: "simplemq-client"}, queue.WithClient(c.NewHttpRequestDoer()))
-	if err != nil {
-		return nil, NewError("NewQueueClientWithApiUrl", fmt.Errorf("create client: %w", err))
+	if dupable, ok := client.(saclient.ClientOptionAPI); !ok {
+		return nil, NewError("client does not implement saclient.ClientOptionAPI", nil)
+	} else if augmented, err := dupable.DupWith(
+		saclient.WithUserAgent(UserAgent),
+		// これはなにか:
+		// DummySecuritySource.ApiKeyAuth()がBasic認証を生成
+		// しかし実際の通信で必ずしもBasic認証が使われると限らない
+		//　そのあたりをsaclient-go側で吸収させる設定が下記↓
+		saclient.WithForceAutomaticAuthentication(),
+	); err != nil {
+		return nil, err
+	} else {
+		return queue.NewClient(apiUrl, ss, queue.WithClient(augmented))
 	}
-
-	return v1Client, nil
 }
 
 // DefaultMessageAPIRootURL デフォルトのMessage APIルートURL
@@ -78,29 +80,25 @@ func (ss ApiKeySecuritySource) ApiKeyAuth(ctx context.Context, operationName mes
 	return message.ApiKeyAuth{Token: ss.Token}, nil
 }
 
-func NewMessageClient(apiKey string, params ...client.ClientParam) (*message.Client, error) {
-	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, apiKey, params...)
+func NewMessageClient(apiKey string, client saclient.ClientAPI) (*message.Client, error) {
+	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, apiKey, client)
 }
 
-func NewMessageClientWithApiUrl(apiUrl, apiKey string, params ...client.ClientParam) (*message.Client, error) {
-	c, err := client.NewClient(apiUrl, append([]client.ClientParam{
-		client.WithUserAgent(UserAgent),
-		client.WithOptions(&client.Options{
-			RequestCustomizers: []sacloudhttp.RequestCustomizer{
-				func(req *http.Request) error {
-					req.Header.Set("Authorization", fmt.Sprintf("Bearer %s", apiKey))
-					return nil
-				},
-			}})},
-		params...)...)
-	if err != nil {
-		return nil, NewError("NewMessageClientWithApiUrl", err)
-	}
+func NewMessageClientWithApiUrl(apiUrl, apiKey string, client saclient.ClientAPI) (*message.Client, error) {
+	var ss ApiKeySecuritySource
 
-	v1Client, err := message.NewClient(apiUrl, ApiKeySecuritySource{Token: apiKey}, message.WithClient(c.NewHttpRequestDoer()))
-	if err != nil {
-		return nil, NewError("NewMessageClientWithApiUrl", fmt.Errorf("create client: %w", err))
+	if dupable, ok := client.(saclient.ClientOptionAPI); !ok {
+		return nil, NewError("client does not implement saclient.ClientOptionAPI", nil)
+	} else if augmented, err := dupable.DupWith(
+		saclient.WithUserAgent(UserAgent),
+		// これはなにか:
+		// ApiKeySecuritySource.ApiKeyAuth()がBasic認証を生成
+		// しかし実際の通信で必要なのはBearer認証
+		//　そのあたりをsaclient-go側で吸収させる設定が下記↓
+		saclient.WithBearerToken(apiKey),
+	); err != nil {
+		return nil, err
+	} else {
+		return message.NewClient(apiUrl, ss, message.WithClient(augmented))
 	}
-
-	return v1Client, nil
 }
