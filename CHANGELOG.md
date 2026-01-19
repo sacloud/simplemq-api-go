@@ -1,5 +1,12 @@
 # Changelog
 
+## [v0.4.0](https://github.com/sacloud/simplemq-api-go/compare/v0.3.0...v0.4.0) - 2026-01-19
+- feat: use of `saclient-go` by @shyouhei in https://github.com/sacloud/simplemq-api-go/pull/45
+- ci: bump actions/setup-go from 6.0.0 to 6.1.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/37
+- ci: bump Songmu/tagpr from 1.9.0 to 1.10.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/43
+- ci: bump actions/checkout from 5.0.0 to 6.0.1 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/42
+- go: bump github.com/ogen-go/ogen from 1.16.0 to 1.18.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/41
+
 ## [v0.3.0](https://github.com/sacloud/simplemq-api-go/compare/v0.2.0...v0.3.0) - 2025-11-26
 - Update github settings by @a2not in https://github.com/sacloud/simplemq-api-go/pull/26
 - chore(textlint): ignore CHANGELOG.md file by @a2not in https://github.com/sacloud/simplemq-api-go/pull/33
