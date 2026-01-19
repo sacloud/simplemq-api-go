@@ -658,7 +658,7 @@ func (c *Client) sendGetQueues(ctx context.Context) (res GetQueuesRes, err error
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = "/commonserviceitem"
+	pathParts[0] = `/commonserviceitem?{"Filter":{"Provider.Class":"simplemq"}}` // NOTE: ここだけOpenAPIで表現できず手動で書き加えている
 	uri.AddPathParts(u, pathParts[:]...)
 
 	r, err := ht.NewRequest(ctx, "GET", u)
