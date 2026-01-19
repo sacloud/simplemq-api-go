@@ -69,13 +69,17 @@ func (s *Message) Validate() error {
 func (s MessageContent) Validate() error {
 	alias := (string)(s)
 	if err := (validate.String{
-		MinLength:    0,
-		MinLengthSet: false,
-		MaxLength:    256000,
-		MaxLengthSet: true,
-		Email:        false,
-		Hostname:     false,
-		Regex:        regexMap["^[0-9a-zA-Z+/=]*$"],
+		MinLength:     0,
+		MinLengthSet:  false,
+		MaxLength:     256000,
+		MaxLengthSet:  true,
+		Email:         false,
+		Hostname:      false,
+		Regex:         regexMap["^[0-9a-zA-Z+/=]*$"],
+		MinNumeric:    0,
+		MinNumericSet: false,
+		MaxNumeric:    0,
+		MaxNumericSet: false,
 	}).Validate(string(alias)); err != nil {
 		return errors.Wrap(err, "string")
 	}
@@ -85,13 +89,17 @@ func (s MessageContent) Validate() error {
 func (s MessageId) Validate() error {
 	alias := (string)(s)
 	if err := (validate.String{
-		MinLength:    36,
-		MinLengthSet: true,
-		MaxLength:    36,
-		MaxLengthSet: true,
-		Email:        false,
-		Hostname:     false,
-		Regex:        regexMap["^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"],
+		MinLength:     36,
+		MinLengthSet:  true,
+		MaxLength:     36,
+		MaxLengthSet:  true,
+		Email:         false,
+		Hostname:      false,
+		Regex:         regexMap["^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$"],
+		MinNumeric:    0,
+		MinNumericSet: false,
+		MaxNumeric:    0,
+		MaxNumericSet: false,
 	}).Validate(string(alias)); err != nil {
 		return errors.Wrap(err, "string")
 	}
@@ -135,13 +143,17 @@ func (s *NewMessage) Validate() error {
 func (s QueueName) Validate() error {
 	alias := (string)(s)
 	if err := (validate.String{
-		MinLength:    5,
-		MinLengthSet: true,
-		MaxLength:    64,
-		MaxLengthSet: true,
-		Email:        false,
-		Hostname:     false,
-		Regex:        regexMap["^[0-9a-zA-Z]+(-[0-9a-zA-Z]+)*$"],
+		MinLength:     5,
+		MinLengthSet:  true,
+		MaxLength:     64,
+		MaxLengthSet:  true,
+		Email:         false,
+		Hostname:      false,
+		Regex:         regexMap["^[0-9a-zA-Z]+(-[0-9a-zA-Z]+)*$"],
+		MinNumeric:    0,
+		MinNumericSet: false,
+		MaxNumeric:    0,
+		MaxNumericSet: false,
 	}).Validate(string(alias)); err != nil {
 		return errors.Wrap(err, "string")
 	}
