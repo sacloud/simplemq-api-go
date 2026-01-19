@@ -269,6 +269,7 @@ func (s ExpireSeconds) Validate() error {
 		MaxExclusive:  false,
 		MultipleOfSet: false,
 		MultipleOf:    0,
+		Pattern:       nil,
 	}).Validate(int64(alias)); err != nil {
 		return errors.Wrap(err, "int")
 	}
@@ -373,13 +374,17 @@ func (s ProviderClass) Validate() error {
 func (s QueueName) Validate() error {
 	alias := (string)(s)
 	if err := (validate.String{
-		MinLength:    5,
-		MinLengthSet: true,
-		MaxLength:    64,
-		MaxLengthSet: true,
-		Email:        false,
-		Hostname:     false,
-		Regex:        regexMap["^[0-9a-zA-Z]+(-[0-9a-zA-Z]+)*$"],
+		MinLength:     5,
+		MinLengthSet:  true,
+		MaxLength:     64,
+		MaxLengthSet:  true,
+		Email:         false,
+		Hostname:      false,
+		Regex:         regexMap["^[0-9a-zA-Z]+(-[0-9a-zA-Z]+)*$"],
+		MinNumeric:    0,
+		MinNumericSet: false,
+		MaxNumeric:    0,
+		MaxNumericSet: false,
 	}).Validate(string(alias)); err != nil {
 		return errors.Wrap(err, "string")
 	}
@@ -431,6 +436,7 @@ func (s VisibilityTimeoutSeconds) Validate() error {
 		MaxExclusive:  false,
 		MultipleOfSet: false,
 		MultipleOf:    0,
+		Pattern:       nil,
 	}).Validate(int64(alias)); err != nil {
 		return errors.Wrap(err, "int")
 	}
