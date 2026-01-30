@@ -11,3 +11,8 @@ include includes/go/single.mk
 
 default: $(DEFAULT_GOALS)
 tools: dev-tools
+
+.PHONY: gen
+gen:
+	go tool ogen --config ogen-config.yaml --target ./apis/v1/queue --package queue --clean ./openapi/queue.yaml
+	go tool ogen --config ogen-config.yaml --target ./apis/v1/message --package message --clean ./openapi/message.yaml
