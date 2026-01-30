@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.4.1](https://github.com/sacloud/simplemq-api-go/compare/v0.4.0...v0.4.1) - 2026-01-30
+- CIでのE2Eテストの廃止 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/56
+- OpenAPI定義の追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/58
+
 ## [v0.4.0](https://github.com/sacloud/simplemq-api-go/compare/v0.3.0...v0.4.0) - 2026-01-19
 - feat: use of `saclient-go` by @shyouhei in https://github.com/sacloud/simplemq-api-go/pull/45
 - ci: bump actions/setup-go from 6.0.0 to 6.1.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/37
