@@ -16,3 +16,4 @@ tools: dev-tools
 gen:
 	go tool ogen --config ogen-config.yaml --target ./apis/v1/queue --package queue --clean ./openapi/queue.yaml
 	go tool ogen --config ogen-config.yaml --target ./apis/v1/message --package message --clean ./openapi/message.yaml
+	patch -p1 < patch/01_list_filter.patch
