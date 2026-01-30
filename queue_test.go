@@ -29,7 +29,7 @@ import (
 var queueClient saclient.Client
 
 func TestQueueAPI(t *testing.T) {
-	testutil.PreCheckEnvsFunc("SAKURACLOUD_ACCESS_TOKEN", "SAKURACLOUD_ACCESS_TOKEN_SECRET")(t)
+	testutil.PreCheckEnvsFunc("SAKURA_ACCESS_TOKEN", "SAKURA_ACCESS_TOKEN_SECRET")(t)
 
 	ctx := context.Background()
 
