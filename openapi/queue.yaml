@@ -29,10 +29,10 @@ info:
     </div>
 
     ## APIエンドポイント
-    https://secure.sakura.ad.jp/cloud/zone/tk1b/api/cloud/1.1
+    https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1
 
 servers:
-  - url: https://secure.sakura.ad.jp/cloud/zone/tk1b/api/cloud/1.1
+  - url: https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1
     description: さくらのクラウドAPIエンドポイント
 
 security:

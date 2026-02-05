@@ -26,7 +26,7 @@ import (
 )
 
 // DefaultQueueAPIRootURL デフォルトのQueue APIルートURL
-const DefaultQueueAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/tk1b/api/cloud/1.1"
+const DefaultQueueAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1"
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
