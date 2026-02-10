@@ -25,8 +25,17 @@ import (
 	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
 )
 
-// DefaultQueueAPIRootURL デフォルトのQueue APIルートURL
-const DefaultQueueAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1"
+const (
+	// DefaultQueueAPIRootURL デフォルトのQueue APIルートURL
+	DefaultQueueAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1"
+	// ServiceKeyQueue SDKの種別を示すキー、プロファイルでのエンドポイント取得に利用するもので、Queue APIのエンドポイント切り替えに利用する
+	ServiceKeyQueue = "simplemq_queue"
+
+	// DefaultMessageAPIRootURL デフォルトのMessage APIルートURL
+	DefaultMessageAPIRootURL = "https://simplemq.tk1b.api.sacloud.jp"
+	// ServiceKeyMessage SDKの種別を示すキー、プロファイルでのエンドポイント取得に利用するもので、Message APIのエンドポイント切り替えに利用する
+	ServiceKeyMessage = "simplemq_message"
+)
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
@@ -47,7 +56,16 @@ func (ss DummySecuritySource) ApiKeyAuth(ctx context.Context, operationName queu
 }
 
 func NewQueueClient(client saclient.ClientAPI) (*queue.Client, error) {
-	return NewQueueClientWithApiUrl(DefaultQueueAPIRootURL, client)
+	endpointConfig, err := client.EndpointConfig()
+	if err != nil {
+		return nil, NewError("unable to load queue endpoint configuration", err)
+	}
+	endpoint := DefaultQueueAPIRootURL
+	if ep, ok := endpointConfig.Endpoints[ServiceKeyQueue]; ok && ep != "" {
+		endpoint = ep
+	}
+
+	return NewQueueClientWithApiUrl(endpoint, client)
 }
 
 func NewQueueClientWithApiUrl(apiUrl string, client saclient.ClientAPI) (*queue.Client, error) {
@@ -69,9 +87,6 @@ func NewQueueClientWithApiUrl(apiUrl string, client saclient.ClientAPI) (*queue.
 	}
 }
 
-// DefaultMessageAPIRootURL デフォルトのMessage APIルートURL
-const DefaultMessageAPIRootURL = "https://simplemq.tk1b.api.sacloud.jp"
-
 type ApiKeySecuritySource struct {
 	Token string
 }
@@ -81,7 +96,16 @@ func (ss ApiKeySecuritySource) ApiKeyAuth(ctx context.Context, operationName mes
 }
 
 func NewMessageClient(apiKey string, client saclient.ClientAPI) (*message.Client, error) {
-	return NewMessageClientWithApiUrl(DefaultMessageAPIRootURL, apiKey, client)
+	endpointConfig, err := client.EndpointConfig()
+	if err != nil {
+		return nil, NewError("unable to load message endpoint configuration", err)
+	}
+	endpoint := DefaultMessageAPIRootURL
+	if ep, ok := endpointConfig.Endpoints[ServiceKeyMessage]; ok && ep != "" {
+		endpoint = ep
+	}
+
+	return NewMessageClientWithApiUrl(endpoint, apiKey, client)
 }
 
 func NewMessageClientWithApiUrl(apiUrl, apiKey string, client saclient.ClientAPI) (*message.Client, error) {
