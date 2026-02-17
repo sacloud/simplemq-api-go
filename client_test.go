@@ -80,7 +80,7 @@ func TestNewMessageClient_WithCustomEndpoint(t *testing.T) {
 	assert.NotNil(client)
 
 	messageAPI := simplemq.NewMessageOp(client, "test-queue")
-	_, err = messageAPI.Send(t.Context(), "test")
+	_, _ = messageAPI.Send(t.Context(), "test")
 
 	requests := tracker.Requests()
 	assert.Len(requests, 1)
@@ -98,14 +98,15 @@ func (m *mockRequestTracker) handler() http.HandlerFunc {
 		m.requests = append(m.requests, r)
 		m.mu.Unlock()
 
-		if r.URL.Path == "/commonserviceitem" {
+		switch {
+		case r.URL.Path == "/commonserviceitem":
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(map[string]interface{}{
+			json.NewEncoder(w).Encode(map[string]interface{}{ //nolint:errcheck,gosec
 				"CommonServiceItems": []interface{}{},
 			})
-		} else if r.URL.Path == "/v1/queues/test-queue/messages" && r.Method == "POST" {
+		case r.URL.Path == "/v1/queues/test-queue/messages" && r.Method == "POST":
 			w.Header().Set("Content-Type", "application/json")
-			json.NewEncoder(w).Encode(map[string]interface{}{
+			json.NewEncoder(w).Encode(map[string]interface{}{ //nolint:errcheck,gosec
 				"result": "success",
 				"message": map[string]interface{}{
 					"id":         "0193b878-1b25-7775-87f5-9c698206a7e7",
@@ -115,7 +116,7 @@ func (m *mockRequestTracker) handler() http.HandlerFunc {
 					"expires_at": 1704070800000,
 				},
 			})
-		} else {
+		default:
 			w.WriteHeader(http.StatusNoContent)
 		}
 	}
