@@ -1,5 +1,13 @@
 # Changelog
 
+## [v0.5.0](https://github.com/sacloud/simplemq-api-go/compare/v0.4.0...v0.5.0) - 2026-02-19
+- CIでのE2Eテストの廃止 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/56
+- OpenAPI定義の追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/58
+- Configure Queue API to use is1a zone by @yamamoto-febc in https://github.com/sacloud/simplemq-api-go/pull/60
+- go toolchainを上げる by @a2not in https://github.com/sacloud/simplemq-api-go/pull/61
+- Make API root URL configurable via saclient-go endpoints by @yamamoto-febc in https://github.com/sacloud/simplemq-api-go/pull/63
+- Align SimpleMQ service keys and endpoint env vars to snake_case by @yamamoto-febc in https://github.com/sacloud/simplemq-api-go/pull/66
+
 ## [v0.4.0](https://github.com/sacloud/simplemq-api-go/compare/v0.3.0...v0.4.0) - 2026-01-19
 - feat: use of `saclient-go` by @shyouhei in https://github.com/sacloud/simplemq-api-go/pull/45
 - ci: bump actions/setup-go from 6.0.0 to 6.1.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/37
