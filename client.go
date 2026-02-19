@@ -29,12 +29,12 @@ const (
 	// DefaultQueueAPIRootURL デフォルトのQueue APIルートURL
 	DefaultQueueAPIRootURL = "https://secure.sakura.ad.jp/cloud/zone/is1a/api/cloud/1.1"
 	// ServiceKeyQueue SDKの種別を示すキー、プロファイルでのエンドポイント取得に利用するもので、Queue APIのエンドポイント切り替えに利用する
-	ServiceKeyQueue = "simplemq_queue"
+	ServiceKeyQueue = "simple_mq_queue"
 
 	// DefaultMessageAPIRootURL デフォルトのMessage APIルートURL
 	DefaultMessageAPIRootURL = "https://simplemq.tk1b.api.sacloud.jp"
 	// ServiceKeyMessage SDKの種別を示すキー、プロファイルでのエンドポイント取得に利用するもので、Message APIのエンドポイント切り替えに利用する
-	ServiceKeyMessage = "simplemq_message"
+	ServiceKeyMessage = "simple_mq_message"
 )
 
 // UserAgent APIリクエスト時のユーザーエージェント

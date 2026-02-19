@@ -42,7 +42,7 @@ func TestNewQueueClient_WithCustomEndpoint(t *testing.T) {
 	defer tracker.Close()
 
 	var theClient saclient.Client
-	err := theClient.SetEnviron([]string{"SAKURA_ENDPOINTS_SIMPLEMQ_QUEUE=" + tracker.URL()})
+	err := theClient.SetEnviron([]string{"SAKURA_ENDPOINTS_SIMPLE_MQ_QUEUE=" + tracker.URL()})
 	assert.NoError(err)
 
 	client, err := simplemq.NewQueueClient(&theClient)
@@ -72,7 +72,7 @@ func TestNewMessageClient_WithCustomEndpoint(t *testing.T) {
 	defer tracker.Close()
 
 	var theClient saclient.Client
-	err := theClient.SetEnviron([]string{"SAKURA_ENDPOINTS_SIMPLEMQ_MESSAGE=" + tracker.URL()})
+	err := theClient.SetEnviron([]string{"SAKURA_ENDPOINTS_SIMPLE_MQ_MESSAGE=" + tracker.URL()})
 	assert.NoError(err)
 
 	client, err := simplemq.NewMessageClient("test-api-key", &theClient)
