@@ -658,8 +658,9 @@ func (c *Client) sendGetQueues(ctx context.Context) (res GetQueuesRes, err error
 
 	u := uri.Clone(c.requestURL(ctx))
 	var pathParts [1]string
-	pathParts[0] = `/commonserviceitem?{"Filter":{"Provider.Class":"simplemq"}}` // NOTE: ここだけOpenAPIで表現できず手動で書き加えている
+	pathParts[0] = "/commonserviceitem"
 	uri.AddPathParts(u, pathParts[:]...)
+	u.RawQuery = url.QueryEscape(`{"Filter":{"Provider.Class":"simplemq"}}`) // NOTE: ここだけOpenAPIで表現できず手動で書き加えている
 
 	r, err := ht.NewRequest(ctx, "GET", u)
 	if err != nil {
