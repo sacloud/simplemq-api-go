@@ -18,6 +18,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"net/url"
 	"sync"
 	"testing"
 
@@ -54,6 +55,31 @@ func TestNewQueueClient_WithCustomEndpoint(t *testing.T) {
 
 	requests := tracker.Requests()
 	assert.Len(requests, 1)
+}
+
+// TestNewQueueClient_FilterQueryParam OpenAPIで表現できず生成コードへのpatchで対応しているURLクエリパラメータが正しく付与されているか
+func TestNewQueueClient_FilterQueryParam(t *testing.T) {
+	assert := require.New(t)
+
+	tracker := newMockRequestTracker()
+	defer tracker.Close()
+
+	var theClient saclient.Client
+	err := theClient.SetEnviron([]string{"SAKURA_ENDPOINTS_SIMPLE_MQ_QUEUE=" + tracker.URL()})
+	assert.NoError(err)
+
+	client, err := simplemq.NewQueueClient(&theClient)
+	assert.NoError(err)
+	assert.NotNil(client)
+
+	queueAPI := simplemq.NewQueueOp(client)
+	_, _ = queueAPI.List(t.Context())
+
+	requests := tracker.Requests()
+	assert.Len(requests, 1)
+	assert.Equal("/commonserviceitem", requests[0].URL.Path)
+	expectedQuery := url.QueryEscape(`{"Filter":{"Provider.Class":"simplemq"}}`)
+	assert.Equal(expectedQuery, requests[0].URL.RawQuery)
 }
 
 func TestNewMessageClient(t *testing.T) {
