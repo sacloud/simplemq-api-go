@@ -1,5 +1,10 @@
 # Changelog
 
+## [v0.5.1](https://github.com/sacloud/simplemq-api-go/compare/v0.5.0...v0.5.1) - 2026-04-13
+- Remove api-client-go dependency by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/80
+- ci: bump Songmu/tagpr from 1.10.0 to 1.18.1 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/79
+- ci: bump actions/setup-go from 6.1.0 to 6.4.0 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/76
+
 ## [v0.5.0](https://github.com/sacloud/simplemq-api-go/compare/v0.4.0...v0.5.0) - 2026-03-09
 - CIでのE2Eテストの廃止 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/56
 - OpenAPI定義の追加 by @a2not in https://github.com/sacloud/simplemq-api-go/pull/58
