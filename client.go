@@ -19,7 +19,6 @@ import (
 	"fmt"
 	"runtime"
 
-	client "github.com/sacloud/api-client-go"
 	"github.com/sacloud/saclient-go"
 	"github.com/sacloud/simplemq-api-go/apis/v1/message"
 	"github.com/sacloud/simplemq-api-go/apis/v1/queue"
@@ -39,14 +38,13 @@ const (
 
 // UserAgent APIリクエスト時のユーザーエージェント
 var UserAgent = fmt.Sprintf(
-	"simplemq-api-go/%s (%s/%s; +https://github.com/sacloud/simplemq-api-go) %s",
+	"simplemq-api-go/%s (%s/%s; +https://github.com/sacloud/simplemq-api-go)",
 	Version,
 	runtime.GOOS,
 	runtime.GOARCH,
-	client.DefaultUserAgent,
 )
 
-// SecuritySourceはOpenAPI定義で使用されている認証のための仕組み。api-client-goが処理するので、ogen用はダミーで誤魔化す
+// SecuritySourceはOpenAPI定義で使用されている認証のための仕組み。saclient-goが処理するので、ogen用はダミーで誤魔化す
 type DummySecuritySource struct {
 	Token string
 }
