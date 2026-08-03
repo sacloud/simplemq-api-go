@@ -16,4 +16,4 @@
 // Please migrate to that module. This repository will be archived.
 package simplemq
 
-const Version = "0.5.1"
+const Version = "0.5.2"

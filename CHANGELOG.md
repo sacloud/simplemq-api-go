@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.5.2](https://github.com/sacloud/simplemq-api-go/compare/v0.5.1...v0.5.2) - 2026-08-03
+- update README for repository transition by @shyouhei in https://github.com/sacloud/simplemq-api-go/pull/91
+
 ## [v0.5.1](https://github.com/sacloud/simplemq-api-go/compare/v0.5.0...v0.5.1) - 2026-04-13
 - Remove api-client-go dependency by @repeatedly in https://github.com/sacloud/simplemq-api-go/pull/80
 - ci: bump Songmu/tagpr from 1.10.0 to 1.18.1 by @dependabot[bot] in https://github.com/sacloud/simplemq-api-go/pull/79
